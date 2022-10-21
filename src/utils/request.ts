@@ -6,7 +6,7 @@ import axios, {AxiosInstance, AxiosRequestConfig} from 'axios'
  * @returns 
  */
 function requestInceptorsSuccess(config: any){
-    console.log("请求成功config:", config)
+    // console.log("请求成功config:", config)
     return config
 }
 
@@ -16,7 +16,7 @@ function requestInceptorsSuccess(config: any){
  * @returns 
  */
 function requestInceptorsError(error:any){
-    console.log("请求失败:", error)
+    // console.log("请求失败:", error)
     return Promise.reject(error)
 }
 
@@ -26,7 +26,7 @@ function requestInceptorsError(error:any){
  * @returns 
  */
 function responseInceptorsSuccess(response:any){
-    console.log("响应response：", response);
+    // console.log("响应response：", response);
     return response.data
 }
 
@@ -36,7 +36,7 @@ function responseInceptorsSuccess(response:any){
  * @returns 
  */
 function responseInceptorsError(error: any){
-    console.log("响应失败", error);
+    // console.log("响应失败", error);
     if(
         error.response &&
         typeof error.response.data === 'object' &&

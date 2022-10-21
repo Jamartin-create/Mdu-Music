@@ -1,0 +1,99 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 3543610 */
+  src: url('iconfont.woff2?t=1660547476588') format('woff2'),
+       url('iconfont.woff?t=1660547476588') format('woff'),
+       url('iconfont.ttf?t=1660547476588') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-volume:before {
+  content: "\e69f";
+}
+
+.icon-close_volume:before {
+  content: "\e6a0";
+}
+
+.icon-pause:before {
+  content: "\e741";
+}
+
+.icon-play:before {
+  content: "\e6cf";
+}
+
+.icon-suijibofang:before {
+  content: "\e622";
+}
+
+.icon-danquxunhuan:before {
+  content: "\e66d";
+}
+
+.icon-bofang-xunhuanbofang:before {
+  content: "\e68d";
+}
+
+.icon-next:before {
+  content: "\e6f4";
+}
+
+.icon-home:before {
+  content: "\e6d7";
+}
+
+.icon-setting:before {
+  content: "\e63f";
+}
+
+.icon-library:before {
+  content: "\e696";
+}
+
+.icon-twitter-circle-fill:before {
+  content: "\e88a";
+}
+
+.icon-home1:before {
+  content: "\e674";
+}
+
+.icon-left-arrow-key:before {
+  content: "\e600";
+}
+
+.icon-search:before {
+  content: "\e82e";
+}
+
+.icon-Logout:before {
+  content: "\e61f";
+}
+
+.icon-sun:before {
+  content: "\e61d";
+}
+
+.icon-moon:before {
+  content: "\e65c";
+}
+
+.icon-love:before {
+  content: "\e60d";
+}
+
+.icon-love-fill:before {
+  content: "\e60e";
+}
+
+.icon-lil-netease:before {
+  content: "\e97e";
+}
+

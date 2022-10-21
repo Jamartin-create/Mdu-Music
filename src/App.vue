@@ -3,7 +3,14 @@ import { RouterView } from "vue-router";
 </script>
 
 <template>
-  <RouterView></RouterView>
+  <main>
+    <RouterView></RouterView>
+  </main>
 </template>
 
-<style scoped></style>
+<style lang="scss">
+$mainHeight: 100vh;
+main {
+  height: $mainHeight;
+}
+</style>

@@ -4,6 +4,8 @@ import router from './router'
 import { createPinia } from 'pinia'
 import piniaPluginPresistedstate from 'pinia-plugin-persistedstate'
 import App from './App.vue'
+import "./assets/iconfont/iconfont";
+import "./assets/iconfont/iconfont.css";
 
 const app = createApp(App)
 const pinia = createPinia()
