@@ -1,46 +1,111 @@
 <template>
-  <img :src="qrCodeSvg" alt="" />
+  <div class="container">
+    <i class="iconfont icon-lil-netease"></i>
+    <h1 class="title">登录网易云账号</h1>
+    <div class="qrcode-container">
+      <img :src="qrCodeSvg" alt="" />
+    </div>
+    <div class="qrScanDesc">{{ qrCodeDesc }}</div>
+    <p class="tips">暂不支持手机登录和邮箱登录</p>
+    <i class="fas fa-regular fa-arrows-rotate"></i>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref } from "vue";
-import QRCode from "qrcode";
+import { onMounted, ref } from "vue";
+import { generatorQrCode } from "../../../utils/qrCode";
+import { qrKey, checkQrKey } from "../../../api/login";
+import { CODEMESSAGE } from "../../../enum/QRCODE";
 
-type Prop = {
-  unikey: string;
-  width?: number;
-  darkColor?: string;
-  ligthColor?: string;
-};
-const props = withDefaults(defineProps<Prop>(), {
-  width: 180,
-  darkColor: "#272727",
-  ligthColor: "#00000000",
-});
-
-const qrCodeSvg = ref<string>();
-const generatorQrCode = async () => {
-  try {
-    const svg = await QRCode.toString(
-      `https://music.163.com/login?codekey=${props.unikey}`,
-      {
-        width: props.width,
-        color: {
-          dark: props.darkColor,
-          light: props.ligthColor,
-        },
-        type: "svg",
-      }
-    );
-    qrCodeSvg.value = `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-  } catch (e) {
-    console.error(e);
+//获取父组件传值
+const props = withDefaults(
+  defineProps<{
+    width?: number;
+    darkColor?: string;
+    ligthColor?: string;
+  }>(),
+  {
+    width: 180,
+    darkColor: "#272727",
+    ligthColor: "#00000000",
   }
-};
+);
+
+const qrCodeDesc = ref<string>();
+const qrCodeSvg = ref<string>();
+const qrCode = ref<string>();
+let interval: any = null;
+
+async function refreshQrCode() {
+  if (interval != null) clearInterval(interval);
+  const {
+    data: { unikey },
+  } = await qrKey();
+  qrCode.value = unikey;
+  qrCodeSvg.value = await generatorQrCode(unikey, {
+    width: props.width,
+    color: {
+      dark: props.darkColor,
+      light: props.ligthColor,
+    },
+    type: "svg",
+  });
+  await checkQrStatus();
+}
+
+function checkQrStatus() {
+  interval = setInterval(async () => {
+    if (qrCode.value === "") return;
+    const res = await checkQrKey(qrCode.value!);
+    const { code } = res;
+    if (code === 800) {
+      refreshQrCode();
+    }
+    qrCodeDesc.value =
+      code === 801
+        ? CODEMESSAGE.CODEMSG_801
+        : code === 802
+        ? CODEMESSAGE.CODEMSG_802
+        : CODEMESSAGE.CODEMSG_803;
+  }, 1000);
+}
 
 defineExpose({
-  generatorQrCode,
+  refreshQrCode,
+});
+
+onMounted(() => {
+  refreshQrCode();
 });
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .qrcode-container {
+    background-color: rgba(134, 134, 134, 0.1);
+    height: 200px;
+    width: 200px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+  }
+  .iconfont {
+    font-size: 60px;
+    color: #d81e06;
+  }
+  .title {
+    font-size: 26px;
+  }
+  .tips {
+    font-size: 12px;
+    color: #b0b0b0;
+  }
+}
+</style>

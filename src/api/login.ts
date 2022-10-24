@@ -4,13 +4,22 @@ const request = createAxiosInstance()
 
 //获取生成二维码的key
 export const qrKey = () => {
-    return request.get('/login/qr/key')
+    return request({
+        url: `/login/qr/key?timestamp`,
+        method: 'get',
+        params: {
+          timestamp: new Date().getTime(),
+        },
+    })
 }
 
 //检测二维码状态
 export const checkQrKey = (key:string) => {
     return request({
         url: `/login/qr/check?key=${key}`,
-        method: 'get'
+        method: 'get',
+        params: {
+          timestamp: new Date().getTime(),
+        },
     })
 }
