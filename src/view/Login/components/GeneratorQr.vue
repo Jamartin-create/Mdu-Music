@@ -5,9 +5,13 @@
     <div class="qrcode-container">
       <img :src="qrCodeSvg" alt="" />
     </div>
-    <div class="qrScanDesc">{{ qrCodeDesc }}</div>
+    <div class="qrScanDesc">
+      {{ qrCodeDesc }}
+      <button @click="refreshQrCode">
+        <i class="fas fa-sync-alt"></i>
+      </button>
+    </div>
     <p class="tips">暂不支持手机登录和邮箱登录</p>
-    <i class="fas fa-regular fa-arrows-rotate"></i>
   </div>
 </template>
 
@@ -16,6 +20,8 @@ import { onMounted, ref } from "vue";
 import { generatorQrCode } from "../../../utils/qrCode";
 import { qrKey, checkQrKey } from "../../../api/login";
 import { CODEMESSAGE } from "../../../enum/QRCODE";
+import {UserStore} from '../../../store/user'
+const userStore = UserStore();
 
 //获取父组件传值
 const props = withDefaults(
@@ -37,7 +43,6 @@ const qrCode = ref<string>();
 let interval: any = null;
 
 async function refreshQrCode() {
-  if (interval != null) clearInterval(interval);
   const {
     data: { unikey },
   } = await qrKey();
@@ -54,10 +59,11 @@ async function refreshQrCode() {
 }
 
 function checkQrStatus() {
+  if (interval != null) clearInterval(interval);
   interval = setInterval(async () => {
     if (qrCode.value === "") return;
     const res = await checkQrKey(qrCode.value!);
-    const { code } = res;
+    const { code, cookie } = res;
     if (code === 800) {
       refreshQrCode();
     }
@@ -67,6 +73,10 @@ function checkQrStatus() {
         : code === 802
         ? CODEMESSAGE.CODEMSG_802
         : CODEMESSAGE.CODEMSG_803;
+    if(code === 803){
+      clearInterval(interval);
+      userStore.userLogin(cookie)
+    }
   }, 1000);
 }
 
@@ -95,6 +105,20 @@ onMounted(() => {
     justify-content: center;
     align-items: center;
     margin: 20px auto;
+  }
+  .qrScanDesc {
+    margin-bottom: 3px;
+    > button {
+      border: none;
+      padding: 3px;
+      background-color: transparent;
+      > i {
+        color: rgba($color: #000000, $alpha: 0.3);
+      }
+      &:active {
+        transform: scale(0.8);
+      }
+    }
   }
   .iconfont {
     font-size: 60px;
