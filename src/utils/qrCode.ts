@@ -12,7 +12,7 @@ export interface QROption {
     type: string;
 }
 
-export async function generatorQrCode(unikey: string, option: QROption ):Promise<string>{
+export async function generatorQrCode(unikey: string, option: QROption): Promise<string> {
     try {
         console.log(unikey)
         const svg = await QRCode.toString(
@@ -24,4 +24,4 @@ export async function generatorQrCode(unikey: string, option: QROption ):Promise
         console.error(e);
         return 'error';
     }
-  };
+};
