@@ -20,7 +20,7 @@ import { onMounted, ref } from "vue";
 import { generatorQrCode } from "../../../utils/qrCode";
 import { qrKey, checkQrKey } from "../../../api/login";
 import { CODEMESSAGE } from "../../../enum/QRCODE";
-import {UserStore} from '../../../store/user'
+import { UserStore } from '../../../store/user'
 const userStore = UserStore();
 
 //获取父组件传值
@@ -62,7 +62,7 @@ function checkQrStatus() {
   if (interval != null) clearInterval(interval);
   interval = setInterval(async () => {
     if (qrCode.value === "") return;
-    const res = await checkQrKey(qrCode.value!);
+    const res: any = await checkQrKey(qrCode.value!);
     const { code, cookie } = res;
     if (code === 800) {
       refreshQrCode();
@@ -71,9 +71,9 @@ function checkQrStatus() {
       code === 801
         ? CODEMESSAGE.CODEMSG_801
         : code === 802
-        ? CODEMESSAGE.CODEMSG_802
-        : CODEMESSAGE.CODEMSG_803;
-    if(code === 803){
+          ? CODEMESSAGE.CODEMSG_802
+          : CODEMESSAGE.CODEMSG_803;
+    if (code === 803) {
       clearInterval(interval);
       userStore.userLogin(cookie)
     }
@@ -96,6 +96,7 @@ onMounted(() => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   .qrcode-container {
     background-color: rgba(134, 134, 134, 0.1);
     height: 200px;
@@ -106,27 +107,34 @@ onMounted(() => {
     align-items: center;
     margin: 20px auto;
   }
+
   .qrScanDesc {
     margin-bottom: 3px;
-    > button {
+
+    >button {
       border: none;
       padding: 3px;
       background-color: transparent;
-      > i {
+
+      >i {
         color: rgba($color: #000000, $alpha: 0.3);
       }
+
       &:active {
         transform: scale(0.8);
       }
     }
   }
+
   .iconfont {
     font-size: 60px;
     color: #d81e06;
   }
+
   .title {
     font-size: 26px;
   }
+
   .tips {
     font-size: 12px;
     color: #b0b0b0;

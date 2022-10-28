@@ -1,6 +1,5 @@
 import { UserStore } from '../store/user'
 import Cookies from 'js-cookie'
-const userStore = UserStore();
 
 export function setCookies(cookieString: string) {
     const cookies = cookieString.split("; HTTPOnly;");
@@ -18,8 +17,4 @@ export function getCookie(key: string) {
 export function removeCookie(key: string) {
     Cookies.remove(key);
     localStorage.removeItem(`cookie-${key}`)
-}
-
-export function doLogout() {
-    userStore.reset();
 }

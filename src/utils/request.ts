@@ -2,7 +2,6 @@ import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 import nprogress from 'nprogress'
 import { getCookie } from './auth'
 import { SysStore } from '../store/sys'
-const sysStore = SysStore();
 
 /**
  * 请求拦截器
@@ -49,6 +48,7 @@ function responseInceptorsSuccess(response: any) {
  * @returns 
  */
 function responseInceptorsError(error: any) {
+    const sysStore = SysStore();
     nprogress.done();
     console.log(error);
     if (error.code === "ERR_NETWORK") {
