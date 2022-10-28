@@ -15,5 +15,8 @@ export const checkQrKey = (key: string) => {
   return request({
     url: `/login/qr/check?key=${key}`,
     method: 'get',
+    headers: {
+      isLoading: false
+    }
   })
 }

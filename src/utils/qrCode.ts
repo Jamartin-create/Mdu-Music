@@ -1,4 +1,3 @@
-
 import QRCode from "qrcode";
 
 export type Color = {

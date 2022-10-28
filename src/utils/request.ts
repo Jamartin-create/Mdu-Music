@@ -10,7 +10,7 @@ const sysStore = SysStore();
  * @returns 
  */
 function requestInceptorsSuccess(config: AxiosRequestConfig) {
-    nprogress.start();
+    config.headers?.isLoading && nprogress.start();
     // console.log("请求成功config:", config)
     const params = config.params ? config.params : {}
     config.params = {
@@ -52,7 +52,6 @@ function responseInceptorsError(error: any) {
     nprogress.done();
     console.log(error);
     if (error.code === "ERR_NETWORK") {
-        console.log(error.message);
         sysStore.showSeconds(3000, "网络异常，请检查网络后重试");
     }
     // console.log("响应失败", error);
