@@ -1,0 +1,18 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    user-select: none;
+}
+
+:root{
+    /*全局颜色*/
+    --primary-color: #ffffff;
+    --second-color: #707070;
+}
+
+body.dark{
+    --primary-color: #3a3b3c;
+    --second-color: #ccc;
+}
