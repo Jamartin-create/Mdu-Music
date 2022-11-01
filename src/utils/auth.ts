@@ -1,4 +1,5 @@
 import { UserStore } from '../store/user'
+import { logOut } from '../api/login'
 import Cookies from 'js-cookie'
 
 export function setCookies(cookieString: string) {
@@ -17,4 +18,13 @@ export function getCookie(key: string) {
 export function removeCookie(key: string) {
     Cookies.remove(key);
     localStorage.removeItem(`cookie-${key}`)
+}
+
+//登出
+export function doLogout() {
+    logOut();
+    removeCookie('MUSIC_U');
+    removeCookie('__csrf');
+    const userStore = UserStore();
+    userStore.reset();
 }

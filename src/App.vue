@@ -1,17 +1,24 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
 import { RouterView } from "vue-router";
 import Toast from "./components/Toast.vue";
-import { UserStore } from './store/user'
-const userStore = UserStore();
-userStore.fetchUserAccount();
+import { UserStore } from "./store/user";
+const loadBasicData = async () => {
+  const userStore = UserStore();
+  await userStore.fetchUserAccount();
+  await userStore.fetchUserPlayList();
+};
+loadBasicData();
 </script>
 
 <template>
   <main>
-    <RouterView></RouterView>
-    <Toast />
+    <RouterView v-slot="{ Component }">
+      <Transition name="page" mode="out-in">
+        <component :is="Component"></component>
+      </Transition>
+    </RouterView>
   </main>
+  <Toast />
 </template>
 
 <style lang="scss">

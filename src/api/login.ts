@@ -1,6 +1,4 @@
-import { createAxiosInstance } from '../utils/request'
-
-const request = createAxiosInstance()
+import request from '../utils/request'
 
 //获取生成二维码的key
 export const qrKey = () => {
@@ -18,5 +16,13 @@ export const checkQrKey = (key: string) => {
     headers: {
       isLoading: false
     }
+  })
+}
+
+//登出
+export const logOut = () => {
+  return request({
+    method: "get",
+    url: "/logout",
   })
 }

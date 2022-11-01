@@ -1,5 +1,5 @@
 export interface UserState {
-    profile: object;
+    profile: any;
     likedPlayListId: string;
     loginMode: "ACCOUNT" | "CUSTOM" | "NOTLOGIN";
 }

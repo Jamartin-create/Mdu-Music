@@ -65,7 +65,7 @@ function responseInceptorsError(error: any) {
     return Promise.reject(error)
 }
 
-export const createAxiosInstance = (config?: AxiosRequestConfig): AxiosInstance => {
+const createAxiosInstance = (config?: AxiosRequestConfig): AxiosInstance => {
     //基础配置
     const instance = axios.create({
         baseURL: import.meta.env.VITE_RES_URL,
@@ -88,3 +88,5 @@ export const createAxiosInstance = (config?: AxiosRequestConfig): AxiosInstance 
 
     return instance;
 }
+
+export default createAxiosInstance();

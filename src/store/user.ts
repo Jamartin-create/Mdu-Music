@@ -1,8 +1,10 @@
 import { defineStore } from 'pinia'
 import { UserState } from './interface'
-import { fetchUserAccount } from '../api/user'
-import { setCookies } from '../utils/auth'
+import { fetchUserAccount, fetchUserPlayList } from '../api/user'
+import { setCookies, doLogout } from '../utils/auth'
 import piniaPersistConfig from '../config/piniaPersist'
+import { SysStore } from './sys'
+import router from '../router'
 
 export const UserStore = defineStore({
     id: "UserStore",
@@ -14,8 +16,29 @@ export const UserStore = defineStore({
     getters: {},
     actions: {
         async fetchUserAccount() {
-            const res: any = await fetchUserAccount();
-            this.profile = res.profile
+            try {
+                const res: any = await fetchUserAccount();
+                if (res.code === 200 && res.account != null) {
+                    this.profile = res.profile;
+                    this.loginMode = "ACCOUNT";
+                } else {
+                    const sysStore = SysStore();
+                    sysStore.showSeconds(3000, "获取账号信息失败，请重新登录");
+                    doLogout();
+                    router.push({ name: 'login' });
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        },
+        async fetchUserPlayList() {
+            try {
+                const res: any = await fetchUserPlayList(this.profile.userId);
+                this.likedPlayListId = res.playlist[0].id;
+                console.log(res);
+            } catch (e) {
+                console.error(e);
+            }
         },
         userLogin(cookieString: string) {
             setCookies(cookieString);
