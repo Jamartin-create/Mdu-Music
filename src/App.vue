@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import SiteNav from "./components/SiteNavigition.vue";
 import { RouterView } from "vue-router";
 import Toast from "./components/Toast.vue";
 import { UserStore } from "./store/user";
@@ -11,6 +12,7 @@ loadBasicData();
 </script>
 
 <template>
+  <SiteNav />
   <main>
     <RouterView v-slot="{ Component }">
       <Transition name="page" mode="out-in">
@@ -25,9 +27,13 @@ loadBasicData();
 $primaryColor: var(--primary-color);
 $secondaryColor: var(--second-color);
 
-$mainHeight: 100vh;
+.page-enter-active,
+.page-leave-active {
+  transition: 600ms ease all;
+}
 
-main {
-  height: $mainHeight;
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
 }
 </style>
