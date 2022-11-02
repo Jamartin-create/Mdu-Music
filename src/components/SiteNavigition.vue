@@ -1,17 +1,20 @@
 <template>
   <header>
-    <nav>
-      <RouterLink :to="{ name: 'home' }"> 首页 </RouterLink>
-      <RouterLink :to="{ name: 'library' }"> 音乐库 </RouterLink>
-    </nav>
-    <div class="search-bar">
-      <i class="fas fa-search icon"></i>
-      <input
-        v-model="keywords"
-        type="text"
-        placeholder="Search..."
-        @keydown.enter="enter"
-      />
+    <div class="drop-shadow">
+      <div class="glass"></div>
+      <nav>
+        <RouterLink :to="{ name: 'home' }"> 首页 </RouterLink>
+        <RouterLink :to="{ name: 'library' }"> 音乐库 </RouterLink>
+      </nav>
+      <div class="search-bar">
+        <i class="fas fa-search icon"></i>
+        <input
+          v-model="keywords"
+          type="text"
+          placeholder="Search..."
+          @keydown.enter="enter"
+        />
+      </div>
     </div>
   </header>
 </template>
@@ -35,47 +38,41 @@ header {
   position: sticky;
   top: 0;
   box-shadow: 0px 2px 10px rgba($color: #000000, $alpha: 0.3);
-  height: 50px;
+  height: 60px;
   background-color: $primaryColor;
   background: hsla(0, 0%, 100%, 0.3);
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    filter: blur(20px);
-    z-index: -1;
-  }
-  > nav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  backdrop-filter: blur(6px);
+  .drop-shadow {
     height: 100%;
-    gap: 10px;
-    font-size: 18px;
-  }
-  .search-bar {
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%);
-    padding: 8px;
-    border: 1px solid rgba($color: #000000, $alpha: 0.2);
-    border-radius: 12px;
-    > input {
-      width: 150px;
-      border: 0;
-      font-size: 14px;
-      &::placeholder {
-        color: rgba($color: #000000, $alpha: 0.4);
-      }
+    > nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      gap: 10px;
+      font-size: 18px;
     }
-    .icon {
-      color: rgba($color: #000000, $alpha: 0.4);
-      font-size: 16px;
-      margin: 0 10px 0 5px;
+    .search-bar {
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      padding: 8px;
+      border: 1px solid rgba($color: #000000, $alpha: 0.2);
+      border-radius: 12px;
+      > input {
+        width: 150px;
+        border: 0;
+        font-size: 14px;
+        &::placeholder {
+          color: rgba($color: #000000, $alpha: 0.4);
+        }
+      }
+      .icon {
+        color: rgba($color: #000000, $alpha: 0.4);
+        font-size: 16px;
+        margin: 0 10px 0 5px;
+      }
     }
   }
 }
