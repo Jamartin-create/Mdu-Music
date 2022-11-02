@@ -9,7 +9,7 @@ import { SysStore } from '../store/sys'
  * @returns 
  */
 function requestInceptorsSuccess(config: AxiosRequestConfig) {
-    config.headers?.isLoading && nprogress.start();
+    config.headers?.isLoading == false || config.headers?.isLoading == null && nprogress.start();
     // console.log("请求成功config:", config)
     const params = config.params ? config.params : {}
     config.params = {

@@ -16,3 +16,10 @@ body.dark{
     --primary-color: #3a3b3c;
     --second-color: #ccc;
 }
+
+/**
+* 全局页面样式
+*/
+.content-page{
+    padding: 1.5rem;
+}

@@ -1,16 +1,17 @@
 <template>
-  <div>
-    <div class="test" v-for="item in playList" :key="item.id">
-      {{ item.name }}
-    </div>
-    <div class="loadmore" @click="loadMore">点击加载更多</div>
+  <div class="content-page">
+    <MusicList
+      :play-list="playList"
+      :loading="searchLoading"
+      @load-more="loadMore"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive } from "vue";
-
-import { useRouter, useRoute, LocationQuery } from "vue-router";
+import MusicList from "../../components/MusicList.vue";
+import { onMounted, reactive, ref, watch } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import { searchByKeyWords } from "../../api/music";
 const route = useRoute();
 
@@ -19,19 +20,18 @@ onMounted(() => {
   loadMore();
 });
 
-type Page = {
+const searchPage = reactive<{
   limit: number;
   offset: number;
   keywords: string;
-};
-
-const searchPage = reactive<Page>({
+}>({
   limit: 50,
   offset: 0,
   keywords: "",
 });
 
 const playList = reactive<any[]>([]);
+const searchLoading = ref<boolean>(false);
 
 function loadMore() {
   console.log("dd");
@@ -39,16 +39,30 @@ function loadMore() {
   searchMusic();
 }
 
+const router = useRouter();
+watch(
+  () => router.currentRoute.value.query,
+  (newVal: any, oldVal: any) => {
+    if (newVal.keywords ?? newVal.keywords === searchPage.keywords) {
+      searchPage.keywords = newVal.keywords;
+      playList.splice(0, playList.length);
+      searchMusic();
+    }
+  },
+  { immediate: true }
+);
+
 async function searchMusic() {
+  searchLoading.value = true;
   try {
     const res: any = await searchByKeyWords({
       ...searchPage,
     });
-    console.log(res.result.songs);
     Array.prototype.push.apply(playList, res.result.songs);
-    console.log(res);
   } catch (e) {
     console.error(e);
+  } finally {
+    searchLoading.value = false;
   }
 }
 </script>

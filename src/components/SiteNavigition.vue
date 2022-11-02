@@ -32,8 +32,7 @@ function enter() {
 $primaryColor: var(--primary-color);
 $secondaryColor: var(--second-color);
 header {
-  position: sticky;
-  top: 0;
+  position: relative;
   box-shadow: 0px 2px 10px rgba($color: #000000, $alpha: 0.3);
   height: 50px;
   background-color: $primaryColor;
