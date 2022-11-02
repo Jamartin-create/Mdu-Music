@@ -11,5 +11,9 @@ export default [
         path: '/login',
         name: 'login',
         component: () => import('../view/Login/index.vue')
+    }, {
+        path: '/search',
+        name: 'search',
+        component: () => import('../view/Search/index.vue')
     }
 ]

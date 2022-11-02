@@ -10,3 +10,12 @@ export interface SysState {
         title: string;
     }
 }
+
+export interface MusicState {
+    searchPage: {
+        limit: number,
+        offset: number,
+    };
+    curPlayList: any[];
+    curPlayListId: number | null;
+}
