@@ -32,10 +32,22 @@ function enter() {
 $primaryColor: var(--primary-color);
 $secondaryColor: var(--second-color);
 header {
-  position: relative;
+  position: sticky;
+  top: 0;
   box-shadow: 0px 2px 10px rgba($color: #000000, $alpha: 0.3);
   height: 50px;
   background-color: $primaryColor;
+  background: hsla(0, 0%, 100%, 0.3);
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    filter: blur(20px);
+    z-index: -1;
+  }
   > nav {
     display: flex;
     align-items: center;
