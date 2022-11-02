@@ -49,7 +49,7 @@ header {
       align-items: center;
       justify-content: center;
       height: 100%;
-      gap: 10px;
+      gap: 30px;
       font-size: 18px;
     }
     .search-bar {

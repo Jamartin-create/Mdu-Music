@@ -3,6 +3,9 @@ import nprogress from 'nprogress'
 import { getCookie } from './auth'
 import { SysStore } from '../store/sys'
 
+//配置进度条参数
+nprogress.configure({ showSpinner: false, minimum: 0.2, easeing: 'swing', speed: 1000, trickleRate: 0.2 });
+
 /**
  * 请求拦截器
  * @param config 

@@ -32,6 +32,7 @@ $primaryReverseColor: #3d3d3d;
   &:hover {
     background-color: $primaryReverseColor;
     color: $primaryColor;
+    cursor: pointer;
   }
   > div {
     width: calc(100% / 3);
