@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
+import { useRouter } from 'vue-router'
 import nprogress from 'nprogress'
 import { getCookie } from './auth'
 import { SysStore } from '../store/sys'
@@ -51,6 +52,7 @@ function responseInceptorsSuccess(response: any) {
  * @returns 
  */
 function responseInceptorsError(error: any) {
+    const router = useRouter();
     const sysStore = SysStore();
     nprogress.done();
     console.log(error);
@@ -64,8 +66,9 @@ function responseInceptorsError(error: any) {
         error.response.data.code === 301
     ) {
         sysStore.showSeconds(3000, "token已失效，请重新登录");
+        router.push({ name: 'login' });
     }
-    return Promise.reject(error)
+    return Promise.reject(error);
 }
 
 const createAxiosInstance = (config?: AxiosRequestConfig): AxiosInstance => {
