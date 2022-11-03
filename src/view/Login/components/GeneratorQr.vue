@@ -55,11 +55,11 @@ async function refreshQrCode() {
     },
     type: "svg",
   });
-  await checkQrStatus();
+  checkQrStatus();
 }
 
 function checkQrStatus() {
-  if (interval != null) clearInterval(interval);
+  clearInterval(interval);
   interval = setInterval(async () => {
     if (qrCode.value === "") return;
     const res: any = await checkQrKey(qrCode.value!);

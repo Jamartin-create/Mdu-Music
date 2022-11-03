@@ -27,16 +27,16 @@ export const UserStore = defineStore({
                     doLogout();
                     router.push({ name: 'login' });
                 }
-            } catch (e) {
-                console.error(e);
+            } catch (e: any) {
+                console.error(e.message);
             }
         },
         async fetchUserPlayList() {
             try {
                 const res: any = await fetchUserPlayList(this.profile.userId);
                 this.likedPlayListId = res.playlist[0].id;
-            } catch (e) {
-                console.error(e);
+            } catch (e: any) {
+                console.error(e.message);
             }
         },
         userLogin(cookieString: string) {
