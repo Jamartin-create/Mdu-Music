@@ -70,6 +70,9 @@ img{
     display: block;
 }
 
+body{
+    overflow-x: hidden;
+}
 
 ::-webkit-scrollbar {
     max-width: 10px;

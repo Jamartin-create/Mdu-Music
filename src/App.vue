@@ -36,4 +36,9 @@ $secondaryColor: var(--second-color);
 .page-leave-to {
   opacity: 0;
 }
+main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 </style>
