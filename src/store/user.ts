@@ -35,7 +35,6 @@ export const UserStore = defineStore({
             try {
                 const res: any = await fetchUserPlayList(this.profile.userId);
                 this.likedPlayListId = res.playlist[0].id;
-                console.log(res);
             } catch (e) {
                 console.error(e);
             }

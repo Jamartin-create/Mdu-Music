@@ -8,7 +8,7 @@
       :artists="item.artists"
       :name="item.name"
     />
-    <button class="loadMore" @click="loadMore">
+    <button class="hover-button" @click="loadMore">
       {{ props.loading ? "loading..." : "点击加载更多" }}
     </button>
   </div>
@@ -31,19 +31,5 @@ function loadMore() {
   display: flex;
   flex-direction: column;
   align-items: center;
-  .loadMore {
-    border: none;
-    width: 100px;
-    padding: 10px 0;
-    border-radius: 6px;
-    background-color: #fff;
-    margin: 10px 0 0;
-    &:hover {
-      box-shadow: 0 2px 10px rgba($color: #000000, $alpha: 0.2);
-    }
-    &:active {
-      transform: scale(0.98);
-    }
-  }
 }
 </style>

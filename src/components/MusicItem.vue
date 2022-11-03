@@ -27,8 +27,8 @@ $primaryReverseColor: #3d3d3d;
   padding: 5px 50px;
   margin: 10px 0;
   border-radius: 6px;
-  font-size: 14px;
-  transition: all 0.1s;
+  font-size: 18px;
+  transition: all 0.2s;
   &:hover {
     background-color: $primaryReverseColor;
     color: $primaryColor;
@@ -36,11 +36,14 @@ $primaryReverseColor: #3d3d3d;
   }
   > div {
     width: calc(100% / 3);
-    padding: 0 10px 0;
+    padding: 5px 10px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     flex: 2;
+    &:first-of-type {
+      font-weight: bolder;
+    }
     &:last-of-type {
       text-align: right;
       flex: 1;

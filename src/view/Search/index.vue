@@ -1,5 +1,6 @@
 <template>
   <div class="content-page">
+    <SubNavBar @change="changeType" />
     <MusicList
       :play-list="playList"
       :loading="searchLoading"
@@ -10,47 +11,31 @@
 
 <script setup lang="ts">
 import MusicList from "../../components/MusicList.vue";
+import SubNavBar from "./components/SubNavBar.vue";
 import { onMounted, reactive, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { searchByKeyWords } from "../../api/music";
+import { MusicKeyWordsParam, SearchType } from "../../api/interface/music";
 const route = useRoute();
-
-onMounted(() => {
-  searchPage.keywords = route.query.keywords as string;
-  loadMore();
-});
-
-const searchPage = reactive<{
-  limit: number;
-  offset: number;
-  keywords: string;
-}>({
-  limit: 50,
-  offset: 0,
-  keywords: "",
-});
+const router = useRouter();
 
 const playList = reactive<any[]>([]);
 const searchLoading = ref<boolean>(false);
 
+const searchPage = reactive<MusicKeyWordsParam>({
+  limit: 50,
+  offset: 0,
+  keywords: "",
+  type: 1,
+});
+
 function loadMore() {
-  console.log("dd");
-  searchPage.offset++;
-  searchMusic();
+  searchPage.offset!++;
 }
 
-const router = useRouter();
-watch(
-  () => router.currentRoute.value.query,
-  (newVal: any, oldVal: any) => {
-    if (newVal.keywords ?? newVal.keywords === searchPage.keywords) {
-      searchPage.keywords = newVal.keywords;
-      playList.splice(0, playList.length);
-      searchMusic();
-    }
-  },
-  { immediate: true }
-);
+function changeType(type: SearchType) {
+  searchPage.type = type;
+}
 
 async function searchMusic() {
   searchLoading.value = true;
@@ -65,10 +50,29 @@ async function searchMusic() {
     searchLoading.value = false;
   }
 }
-</script>
 
-<style scoped lang="scss">
-.test {
-  font-size: 20px;
-}
-</style>
+//监听路由变化
+watch(
+  () => router.currentRoute.value.query,
+  (newVal: any, oldVal: any) => {
+    if (newVal.keywords ?? newVal.keywords === searchPage.keywords) {
+      playList.splice(0, playList.length);
+      searchPage.keywords = newVal.keywords;
+    }
+  },
+  { immediate: true }
+);
+
+watch(
+  () => searchPage,
+  (newVal: any, oldVal: any) => {
+    searchMusic();
+  },
+  { deep: true, immediate: true }
+);
+
+onMounted(() => {
+  searchPage.keywords = route.query.keywords as string;
+  loadMore();
+});
+</script>
