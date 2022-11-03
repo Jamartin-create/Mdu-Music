@@ -1,27 +1,43 @@
 <template>
   <div class="content-page">
     <SubNavBar @change="changeType" />
-    <MusicList
-      :play-list="playList"
-      :loading="searchLoading"
-      @load-more="loadMore"
-    />
+    <Transition name="page" mode="out-in">
+      <component
+        :is="tabComponents[curSelect].component"
+        :list="list"
+        :loading="searchLoading"
+        @load-more="loadMore"
+      ></component>
+    </Transition>
   </div>
 </template>
 
 <script setup lang="ts">
 import MusicList from "../../components/MusicList.vue";
+import AlbumList from "../../components/AlbumList.vue";
 import SubNavBar from "./components/SubNavBar.vue";
-import { onMounted, reactive, ref, watch } from "vue";
+import { computed, markRaw, onMounted, reactive, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { searchByKeyWords } from "../../api/music";
 import { MusicKeyWordsParam, SearchType } from "../../api/interface/music";
+type Component = {
+  id: SearchType;
+  component: any;
+};
+
 const route = useRoute();
 const router = useRouter();
 
-const playList = reactive<any[]>([]);
-const searchLoading = ref<boolean>(false);
-
+const tabComponents = reactive<Component[]>([
+  {
+    id: 1,
+    component: markRaw(MusicList),
+  },
+  {
+    id: 10,
+    component: markRaw(AlbumList),
+  },
+]);
 const searchPage = reactive<MusicKeyWordsParam>({
   limit: 50,
   offset: 0,
@@ -29,11 +45,20 @@ const searchPage = reactive<MusicKeyWordsParam>({
   type: 1,
 });
 
+const searchLoading = ref<boolean>(false);
+const list = reactive<any[]>([]);
+const curSelect = ref<number>(0);
+
 function loadMore() {
   searchPage.offset!++;
 }
 
 function changeType(type: SearchType) {
+  tabComponents.forEach((item, index) => {
+    if (item.id === type) curSelect.value = index;
+  });
+  list.splice(0, list.length);
+  searchPage.offset = 0;
   searchPage.type = type;
 }
 
@@ -43,7 +68,12 @@ async function searchMusic() {
     const res: any = await searchByKeyWords({
       ...searchPage,
     });
-    Array.prototype.push.apply(playList, res.result.songs);
+    const type: SearchType = tabComponents[curSelect.value].id;
+    console.log(res);
+    Array.prototype.push.apply(
+      list,
+      type == 1 ? res.result.songs : type == 10 ? res.result.albums : []
+    );
   } catch (e) {
     console.error(e);
   } finally {
@@ -56,7 +86,7 @@ watch(
   () => router.currentRoute.value.query,
   (newVal: any, oldVal: any) => {
     if (newVal.keywords ?? newVal.keywords === searchPage.keywords) {
-      playList.splice(0, playList.length);
+      list.splice(0, list.length);
       searchPage.keywords = newVal.keywords;
     }
   },
@@ -65,7 +95,10 @@ watch(
 
 watch(
   () => searchPage,
-  (newVal: any, oldVal: any) => {
+  (
+    newVal: MusicKeyWordsParam | undefined,
+    oldVal: MusicKeyWordsParam | undefined
+  ) => {
     searchMusic();
   },
   { deep: true, immediate: true }
@@ -73,6 +106,17 @@ watch(
 
 onMounted(() => {
   searchPage.keywords = route.query.keywords as string;
-  loadMore();
 });
 </script>
+
+<style lang="scss" scoped>
+.page-enter-active,
+.page-leave-active {
+  transition: 600ms ease all;
+}
+
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+}
+</style>

@@ -1,33 +1,33 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
-    user-select: none;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+  user-select: none;
 }
 
-:root{
-    /*全局颜色*/
-    --primary-color: #ffffff;
-    --second-color: #707070;
+:root {
+  /*全局颜色*/
+  --primary-color: #ffffff;
+  --second-color: #707070;
 }
 
-body.dark{
-    --primary-color: #3a3b3c;
-    --second-color: #ccc;
+body.dark {
+  --primary-color: #3a3b3c;
+  --second-color: #ccc;
 }
 
 /**
 * 全局页面样式
 */
-.content-page{
-    padding: 1.5rem;
-    width: 80%;
-    max-width: 1100px;
+.content-page {
+  padding: 1.5rem;
+  width: 80%;
+  max-width: 1100px;
 }
 
-#nprogress .bar{
-    background-color: #7c7c7c !important;
+#nprogress .bar {
+  background-color: #7c7c7c !important;
 }
 
 /**
@@ -35,24 +35,33 @@ body.dark{
 */
 
 .hover-button {
-    border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    background-color: #fff;
-    margin: 10px 0 0;
-    transition: all 0.2s ease-in;
-    font-size: 18px;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  background-color: #fff;
+  margin: 10px 0 0;
+  transition: all 0.2s ease-in;
+  font-size: 18px;
 }
 .hover-button.active {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transform: scale(0.98);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transform: scale(0.98);
 }
-  
+
 .hover-button:hover {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
 .hover-button:active {
-    transform: scale(0.98);
+  transform: scale(0.98);
 }
+
+/*纵向列表*/
+.col-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/*横向列表：TODO*/
