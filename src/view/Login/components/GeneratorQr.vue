@@ -20,7 +20,7 @@ import { onMounted, ref } from "vue";
 import { generatorQrCode } from "../../../utils/qrCode";
 import { qrKey, checkQrKey } from "../../../api/login";
 import { CODEMESSAGE } from "../../../enum/QRCODE";
-import { UserStore } from '../../../store/user'
+import { UserStore } from "../../../store/user";
 const userStore = UserStore();
 
 //获取父组件传值
@@ -71,11 +71,11 @@ function checkQrStatus() {
       code === 801
         ? CODEMESSAGE.CODEMSG_801
         : code === 802
-          ? CODEMESSAGE.CODEMSG_802
-          : CODEMESSAGE.CODEMSG_803;
+        ? CODEMESSAGE.CODEMSG_802
+        : CODEMESSAGE.CODEMSG_803;
     if (code === 803) {
       clearInterval(interval);
-      userStore.userLogin(cookie)
+      userStore.userLogin(cookie);
     }
   }, 1000);
 }
@@ -91,7 +91,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .container {
-  height: 100%;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -111,12 +111,12 @@ onMounted(() => {
   .qrScanDesc {
     margin-bottom: 3px;
 
-    >button {
+    > button {
       border: none;
       padding: 3px;
       background-color: transparent;
 
-      >i {
+      > i {
         color: rgba($color: #000000, $alpha: 0.3);
       }
 
