@@ -42,6 +42,7 @@ header {
   background-color: $primaryColor;
   background: hsla(0, 0%, 100%, 0.3);
   backdrop-filter: blur(6px);
+  z-index: 100;
   .drop-shadow {
     height: 100%;
     > nav {

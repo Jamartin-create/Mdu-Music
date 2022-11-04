@@ -24,5 +24,10 @@ const props = defineProps<{
 <style scoped lang="scss">
 .col-list-item {
   font-size: 22px;
+  > div {
+    &:first-of-type {
+      flex: 1;
+    }
+  }
 }
 </style>
