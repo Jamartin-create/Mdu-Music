@@ -27,7 +27,7 @@ const navList = reactive<
   { id: 10, label: "专辑", active: false },
   { id: 100, label: "歌手", active: false },
   { id: 1000, label: "歌单", active: false },
-  { id: 1004, label: "用户", active: false },
+  { id: 1002, label: "用户", active: false },
 ]);
 function onChange(id: SearchType) {
   emits("change", id);

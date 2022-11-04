@@ -65,6 +65,7 @@ header {
         width: 150px;
         border: 0;
         font-size: 14px;
+        background-color: transparent;
         &::placeholder {
           color: rgba($color: #000000, $alpha: 0.4);
         }

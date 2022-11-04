@@ -18,6 +18,7 @@ import MusicList from "../../components/MusicList.vue";
 import AlbumList from "../../components/AlbumList.vue";
 import SingerList from "../../components/SingerList.vue";
 import PlayMusicList from "../../components/PlayMusicList.vue";
+import UserList from "../../components/UserList.vue";
 import SubNavBar from "./components/SubNavBar.vue";
 import { computed, markRaw, onMounted, reactive, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
@@ -47,6 +48,10 @@ const tabComponents = reactive<Component[]>([
   {
     id: 1000,
     component: markRaw(PlayMusicList),
+  },
+  {
+    id: 1002,
+    component: markRaw(UserList),
   },
 ]);
 const searchPage = reactive<MusicKeyWordsParam>({
@@ -104,6 +109,8 @@ function updatePlayList(lists: any, type: SearchType) {
       ? lists.artists
       : type == 1000
       ? lists.playlists
+      : type == 1002
+      ? lists.userprofiles
       : []
   );
 }
@@ -118,6 +125,8 @@ function checkListLength(lists: any, type: SearchType) {
       ? lists.artistCount
       : type == 1000
       ? lists.playlistCount
+      : type == 1002
+      ? lists.profileCount
       : [];
   noMore.value = list.length >= count;
 }
