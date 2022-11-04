@@ -59,6 +59,7 @@ function loadMore() {
 }
 
 function changeType(type: SearchType) {
+  if (type === tabComponents[curSelect.value].id) return;
   tabComponents.forEach((item, index) => {
     if (item.id === type) curSelect.value = index;
   });
