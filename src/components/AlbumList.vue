@@ -29,5 +29,3 @@ function loadMore() {
   emits("loadMore");
 }
 </script>
-
-<style scoped lang="scss"></style>

@@ -8,13 +8,15 @@
 
 :root {
   /*全局颜色*/
-  --primary-color: #ffffff;
+  --primary-color: #fff;
   --second-color: #707070;
+  --primary-reverse-color: #3d3d3d;
 }
 
 body.dark {
   --primary-color: #3a3b3c;
   --second-color: #ccc;
+  --primary-reverse-color: #fff;
 }
 
 /**
@@ -69,4 +71,67 @@ body.dark {
   align-items: center;
 }
 
+/*纵向列表元素样式*/
+.col-list-item {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  min-width: 600px;
+  padding: 5px 50px;
+  margin: 10px 0;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.col-list-item > div {
+  width: calc(100% / 3);
+  padding: 5px 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 2;
+  display: flex;
+  align-items: center;
+}
+
+.col-list-item > div:first-of-type {
+  font-weight: bolder;
+}
+.col-list-item > div:last-of-type {
+  text-align: right;
+  flex: 1;
+}
+
 /*横向列表：TODO*/
+.row-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/*纵向列表元素样式*/
+.row-list-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.row-list-item > div {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 10px;
+  padding: 10px 10px;
+}
+
+/*通用list-item*/
+.media-list-item:hover {
+  background-color: var(--primary-reverse-color);
+  color: var(--primary-color);
+  cursor: pointer;
+}
+.media-list-item:active {
+  transform: scale(0.98);
+}
