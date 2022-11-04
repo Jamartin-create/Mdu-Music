@@ -15,6 +15,7 @@
 <script setup lang="ts">
 import MusicList from "../../components/MusicList.vue";
 import AlbumList from "../../components/AlbumList.vue";
+import SingerList from "../../components/SingerList.vue";
 import SubNavBar from "./components/SubNavBar.vue";
 import { computed, markRaw, onMounted, reactive, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
@@ -36,6 +37,10 @@ const tabComponents = reactive<Component[]>([
   {
     id: 10,
     component: markRaw(AlbumList),
+  },
+  {
+    id: 100,
+    component: markRaw(SingerList),
   },
 ]);
 const searchPage = reactive<MusicKeyWordsParam>({
@@ -72,7 +77,13 @@ async function searchMusic() {
     console.log(res);
     Array.prototype.push.apply(
       list,
-      type == 1 ? res.result.songs : type == 10 ? res.result.albums : []
+      type == 1
+        ? res.result.songs
+        : type == 10
+        ? res.result.albums
+        : type == 100
+        ? res.result.artists
+        : []
     );
   } catch (e) {
     console.error(e);
