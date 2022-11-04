@@ -34,6 +34,9 @@ $primaryReverseColor: #3d3d3d;
     color: $primaryColor;
     cursor: pointer;
   }
+  &:active {
+    transform: scale(0.98);
+  }
   > div {
     width: calc(100% / 3);
     padding: 5px 10px;

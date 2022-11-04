@@ -21,6 +21,7 @@ import { generatorQrCode } from "../../../utils/qrCode";
 import { qrKey, checkQrKey } from "../../../api/login";
 import { CODEMESSAGE } from "../../../enum/QRCODE";
 import { UserStore } from "../../../store/user";
+import router from "../../../router";
 const userStore = UserStore();
 
 //获取父组件传值
@@ -76,6 +77,8 @@ function checkQrStatus() {
     if (code === 803) {
       clearInterval(interval);
       userStore.userLogin(cookie);
+      await userStore.fetchUserAccount();
+      router.push({ name: "library" });
     }
   }, 1000);
 }
@@ -91,7 +94,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .container {
-  height: 90vh;
+  height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;

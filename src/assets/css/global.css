@@ -64,4 +64,9 @@ body.dark {
   align-items: center;
 }
 
+.col-list .flex-ag-center {
+  display: flex;
+  align-items: center;
+}
+
 /*横向列表：TODO*/

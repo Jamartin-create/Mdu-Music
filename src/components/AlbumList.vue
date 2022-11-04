@@ -9,6 +9,7 @@
       :name="item.name"
       :size="item.size"
       :pic-url="item.pirUrl"
+      :blur-pic-url="item.blurPicUrl"
     />
     <button class="hover-button" @click="loadMore">
       {{ props.loading ? "loading..." : "点击加载更多" }}
@@ -29,4 +30,4 @@ function loadMore() {
 }
 </script>
 
-<style scoped></style>
+<style scoped lang="scss"></style>
