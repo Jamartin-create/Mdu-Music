@@ -5,6 +5,7 @@
       <component
         :is="tabComponents[curSelect].component"
         :list="list"
+        :no-more="noMore"
         :loading="searchLoading"
         @load-more="loadMore"
       ></component>
@@ -51,10 +52,12 @@ const searchPage = reactive<MusicKeyWordsParam>({
 });
 
 const searchLoading = ref<boolean>(false);
+const noMore = ref<boolean>(false);
 const list = reactive<any[]>([]);
 const curSelect = ref<number>(0);
 
 function loadMore() {
+  if (noMore.value) return;
   searchPage.offset!++;
 }
 
@@ -75,22 +78,38 @@ async function searchMusic() {
       ...searchPage,
     });
     const type: SearchType = tabComponents[curSelect.value].id;
-    console.log(res);
-    Array.prototype.push.apply(
-      list,
-      type == 1
-        ? res.result.songs
-        : type == 10
-        ? res.result.albums
-        : type == 100
-        ? res.result.artists
-        : []
-    );
+    updatePlayList(res.result, type);
+    checkListLength(res.result, type);
   } catch (e) {
     console.error(e);
   } finally {
     searchLoading.value = false;
   }
+}
+
+function updatePlayList(lists: any, type: SearchType) {
+  Array.prototype.push.apply(
+    list,
+    type == 1
+      ? lists.songs
+      : type == 10
+      ? lists.albums
+      : type == 100
+      ? lists.artists
+      : []
+  );
+}
+
+function checkListLength(lists: any, type: SearchType) {
+  const count =
+    type == 1
+      ? lists.songCount
+      : type == 10
+      ? lists.albumCount
+      : type == 100
+      ? lists.artistCount
+      : [];
+  noMore.value = list.length >= count;
 }
 
 //监听路由变化

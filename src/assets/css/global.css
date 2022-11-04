@@ -53,7 +53,6 @@ body {
 .hover-button.active {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  transform: scale(0.98);
   z-index: 1;
 }
 
@@ -62,7 +61,7 @@ body {
   cursor: pointer;
 }
 .hover-button:active {
-  transform: scale(0.98);
+  transform: scale(0.96);
 }
 
 /*列表页*/

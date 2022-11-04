@@ -11,7 +11,9 @@
       />
     </div>
     <button class="hover-button" @click="loadMore">
-      {{ props.loading ? "loading..." : "点击加载更多" }}
+      {{
+        noMore ? "没有更多啦" : props.loading ? "loading..." : "点击加载更多"
+      }}
     </button>
   </div>
 </template>
@@ -21,6 +23,7 @@ import MusicItem from "./MusicItem.vue";
 const props = defineProps<{
   list: any[];
   loading: boolean;
+  noMore: boolean;
 }>();
 const emits = defineEmits(["loadMore"]);
 function loadMore() {
