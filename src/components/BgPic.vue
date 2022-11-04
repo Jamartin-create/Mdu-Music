@@ -58,20 +58,23 @@ const style = reactive<CSSProperties>({
     &.is-round {
       border-radius: 50%;
     }
-
-    &:hover + .shadow {
-      transform: scale(0.95) translate(8px, 8px);
-      filter: blur(10px) opacity(0.6);
-    }
-    &:hover {
-      transform: scale(1.02);
-    }
-    &:active {
-      transform: scale(0.98);
-    }
-    &:active + .shadow {
-      transform: scale(0.86) translate(8px, 8px);
-      filter: blur(20px) opacity(0.6);
+  }
+  &.is-hover-blur {
+    img {
+      &:hover + .shadow {
+        transform: scale(0.95) translate(8px, 8px);
+        filter: blur(10px) opacity(0.6);
+      }
+      &:hover {
+        transform: scale(1.02);
+      }
+      &:active {
+        transform: scale(0.98);
+      }
+      &:active + .shadow {
+        transform: scale(0.86) translate(8px, 8px);
+        filter: blur(20px) opacity(0.6);
+      }
     }
   }
   .shadow {

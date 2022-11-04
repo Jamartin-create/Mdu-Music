@@ -1,6 +1,8 @@
 <template>
   <div class="col-list-item media-list-item">
-    <div><BgPic :url="props.blurPicUrl!" :width="70" /></div>
+    <div>
+      <BgPic :url="props.blurPicUrl!" :width="70" :is-hover-blur="false" />
+    </div>
     <div>{{ props.name }}</div>
     <div>
       {{ props.artists.map((item) => item.name).join("/") }}

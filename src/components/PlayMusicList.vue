@@ -18,7 +18,6 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
 import PlayMusicItem from "./PlayMusicItem.vue";
 const props = defineProps<{
   list: any[];
@@ -29,9 +28,6 @@ const emits = defineEmits(["loadMore"]);
 function loadMore() {
   emits("loadMore");
 }
-onMounted(() => {
-  console.log(props);
-});
 </script>
 
 <style scoped></style>

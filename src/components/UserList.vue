@@ -4,7 +4,7 @@
       <UserItem
         v-for="item in props.list"
         :key="item.userId"
-        :id="item.id"
+        :id="item.userId"
         :gender="item.gender"
         :name="item.nickname"
         :pic-url="item.avatarUrl"
@@ -20,7 +20,6 @@
 
 <script setup lang="ts">
 import UserItem from "./UserItem.vue";
-import { onMounted } from "vue";
 const props = defineProps<{
   list: any[];
   loading: boolean;
@@ -30,7 +29,4 @@ const emits = defineEmits(["loadMore"]);
 function loadMore() {
   emits("loadMore");
 }
-onMounted(() => {
-  console.log(props);
-});
 </script>

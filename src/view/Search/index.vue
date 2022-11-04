@@ -87,7 +87,6 @@ async function searchMusic() {
     const res: any = await searchByKeyWords({
       ...searchPage,
     });
-    console.log(res);
     const type: SearchType = tabComponents[curSelect.value].id;
     updatePlayList(res.result, type);
     checkListLength(res.result, type);
