@@ -17,6 +17,7 @@
 import MusicList from "../../components/MusicList.vue";
 import AlbumList from "../../components/AlbumList.vue";
 import SingerList from "../../components/SingerList.vue";
+import PlayMusicList from "../../components/PlayMusicList.vue";
 import SubNavBar from "./components/SubNavBar.vue";
 import { computed, markRaw, onMounted, reactive, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
@@ -42,6 +43,10 @@ const tabComponents = reactive<Component[]>([
   {
     id: 100,
     component: markRaw(SingerList),
+  },
+  {
+    id: 1000,
+    component: markRaw(PlayMusicList),
   },
 ]);
 const searchPage = reactive<MusicKeyWordsParam>({
@@ -77,6 +82,7 @@ async function searchMusic() {
     const res: any = await searchByKeyWords({
       ...searchPage,
     });
+    console.log(res);
     const type: SearchType = tabComponents[curSelect.value].id;
     updatePlayList(res.result, type);
     checkListLength(res.result, type);
@@ -96,6 +102,8 @@ function updatePlayList(lists: any, type: SearchType) {
       ? lists.albums
       : type == 100
       ? lists.artists
+      : type == 1000
+      ? lists.playlists
       : []
   );
 }
@@ -108,6 +116,8 @@ function checkListLength(lists: any, type: SearchType) {
       ? lists.albumCount
       : type == 100
       ? lists.artistCount
+      : type == 1000
+      ? lists.playlistCount
       : [];
   noMore.value = list.length >= count;
 }

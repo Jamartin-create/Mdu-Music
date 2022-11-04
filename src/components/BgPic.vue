@@ -10,7 +10,11 @@
       :class="props.isRound ? 'is-round' : ''"
       :style="style"
     />
-    <div class="shadow" :style="shadowStyle"></div>
+    <div
+      class="shadow"
+      :class="props.isRound ? 'is-round' : ''"
+      :style="shadowStyle"
+    ></div>
   </div>
 </template>
 
@@ -56,7 +60,7 @@ const style = reactive<CSSProperties>({
     }
 
     &:hover + .shadow {
-      transform: scale(0.9) translate(8px, 8px);
+      transform: scale(0.95) translate(8px, 8px);
       filter: blur(10px) opacity(0.6);
     }
     &:hover {
@@ -67,17 +71,20 @@ const style = reactive<CSSProperties>({
     }
     &:active + .shadow {
       transform: scale(0.86) translate(8px, 8px);
-      filter: blur(10px) opacity(0.6);
+      filter: blur(20px) opacity(0.6);
     }
   }
   .shadow {
     position: absolute;
     top: 0;
     z-index: -1;
-    border-radius: 50%;
     background-size: cover;
     transition: 0.3s all;
     aspect-ratio: 1 / 1;
+    border-radius: 6px;
+    &.is-round {
+      border-radius: 50%;
+    }
   }
 }
 </style>

@@ -131,10 +131,7 @@ body {
 }
 
 .row-list-item > div {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   padding: 10px 10px;
 }
 

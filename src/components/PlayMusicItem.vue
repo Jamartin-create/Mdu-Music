@@ -1,9 +1,9 @@
 <template>
   <div class="row-list-item">
     <div>
-      <BgPic :url="props.picUrl!" :width="150" :is-round="true" />
+      <BgPic :url="props.picUrl!" :width="150" />
     </div>
-    <div>{{ props.name }}</div>
+    <div class="title">{{ props.name }}</div>
   </div>
 </template>
 
@@ -12,13 +12,18 @@ import BgPic from "./BgPic.vue";
 const props = defineProps<{
   id: number;
   name: string;
-  alias?: any[];
   picUrl?: string;
 }>();
 </script>
 
 <style scoped lang="scss">
 .row-list-item {
-  font-size: 18px;
+  .title {
+    width: 150px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 16px;
+  }
 }
 </style>
