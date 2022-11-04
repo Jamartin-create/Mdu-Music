@@ -1,13 +1,15 @@
 <template>
-  <div class="col-list">
-    <MusicItem
-      v-for="item in props.list"
-      :key="item.id"
-      :id="item.id"
-      :album="item.album"
-      :artists="item.artists"
-      :name="item.name"
-    />
+  <div class="list-page">
+    <div class="col-list">
+      <MusicItem
+        v-for="item in props.list"
+        :key="item.id"
+        :id="item.id"
+        :album="item.album"
+        :artists="item.artists"
+        :name="item.name"
+      />
+    </div>
     <button class="hover-button" @click="loadMore">
       {{ props.loading ? "loading..." : "点击加载更多" }}
     </button>

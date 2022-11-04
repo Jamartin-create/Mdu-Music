@@ -1,13 +1,18 @@
 <template>
-  <div class="row-list">
-    <SingerItem
-      v-for="item in props.list"
-      :key="item.id"
-      :id="item.id"
-      :alias="item.alias"
-      :name="item.name"
-      :pic-url="item.picUrl"
-    />
+  <div class="list-page">
+    <div class="row-list">
+      <SingerItem
+        v-for="item in props.list"
+        :key="item.id"
+        :id="item.id"
+        :alias="item.alias"
+        :name="item.name"
+        :pic-url="item.picUrl"
+      />
+    </div>
+    <button class="hover-button" @click="loadMore">
+      {{ props.loading ? "loading..." : "点击加载更多" }}
+    </button>
   </div>
 </template>
 

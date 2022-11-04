@@ -48,6 +48,7 @@ body {
   margin: 10px 0 0;
   transition: all 0.2s ease-in;
   font-size: 18px;
+  align-self: center;
 }
 .hover-button.active {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
@@ -62,6 +63,13 @@ body {
 }
 .hover-button:active {
   transform: scale(0.98);
+}
+
+/*列表页*/
+.list-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /*纵向列表*/
