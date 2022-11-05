@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import SiteNav from "./components/SiteNavigition.vue";
 import { RouterView } from "vue-router";
+import SiteNav from "./components/SiteNavigition.vue";
 import Toast from "./components/Toast.vue";
+import Player from "./components/Player.vue";
 import { UserStore } from "./store/user";
 const loadBasicData = async () => {
   const userStore = UserStore();
@@ -13,6 +14,7 @@ loadBasicData();
 
 <template>
   <SiteNav />
+  <Player />
   <main>
     <RouterView v-slot="{ Component }">
       <Transition name="page" mode="out-in">

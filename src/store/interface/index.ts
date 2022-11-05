@@ -1,3 +1,5 @@
+import { MusicLevelType } from '../../api/interface/music'
+
 export interface UserState {
     profile: any;
     likedPlayListId: string;
@@ -12,10 +14,30 @@ export interface SysState {
 }
 
 export interface MusicState {
-    searchPage: {
-        limit: number,
-        offset: number,
-    };
+    curSong: SongInfo | null;
     curPlayList: any[];
     curPlayListId: number | null;
+    songLevel: MusicLevelType;
+    player: {
+        play: boolean;
+        circleMode: CircleMode;
+    }
 }
+export type SongInfo = {
+    id: number;
+    url: string;
+    name: string;
+    duration: number;
+    picUrl: string;
+    album: {
+        id: number;
+        name: string;
+    };
+    alia: string;
+    artists: {
+        id: number;
+        name: string;
+    }[]
+
+};
+export type CircleMode = 'SINGLECIRCLE' | 'LISTCIRCLE' | 'LISTRANDOM';
