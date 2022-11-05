@@ -19,6 +19,7 @@ watch(
   ) => {
     curMusicUrl.value = newVal?.url;
     nextTick(() => {
+      musicStore.pause();
       musicStore.play();
     });
   },

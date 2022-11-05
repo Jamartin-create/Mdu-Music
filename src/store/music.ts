@@ -65,7 +65,6 @@ export const MusicStore = defineStore({
             this.player.circleMode = circleMode;
         },
         play() {
-            this.pause();
             this.player.play = true;
         },
         pause() {
