@@ -2,6 +2,7 @@ import { MusicLevelType } from '../../api/interface/music'
 
 export interface UserState {
     profile: any;
+    playList: any[];
     likedPlayListId: string;
     loginMode: "ACCOUNT" | "CUSTOM" | "NOTLOGIN";
 }

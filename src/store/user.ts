@@ -10,6 +10,7 @@ export const UserStore = defineStore({
     id: "UserStore",
     state: (): UserState => ({
         profile: {},
+        playList: [],
         likedPlayListId: '',
         loginMode: "NOTLOGIN"
     }),
@@ -34,7 +35,15 @@ export const UserStore = defineStore({
         async fetchUserPlayList() {
             try {
                 const res: any = await fetchUserPlayList(this.profile.userId);
-                this.likedPlayListId = res.playlist[0].id;
+                if (res.code === 200) {
+                    this.likedPlayListId = res.playlist[0].id;
+                    this.playList = res.playlist;
+                } else {
+                    const sysStore = SysStore();
+                    sysStore.showSeconds(3000, "获取账号信息失败，请重新登录");
+                    doLogout();
+                    router.push({ name: 'login' });
+                }
             } catch (e: any) {
                 console.error(e.message);
             }
