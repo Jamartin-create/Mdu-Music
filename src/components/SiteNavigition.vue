@@ -3,7 +3,7 @@
     <div class="drop-shadow">
       <div class="glass"></div>
       <nav>
-        <RouterLink :to="{ name: 'home' }"> 首页 </RouterLink>
+        <RouterLink :to="{ name: 'home' }"> 发现 </RouterLink>
         <RouterLink :to="{ name: 'library' }"> 音乐库 </RouterLink>
       </nav>
       <div class="search-bar">

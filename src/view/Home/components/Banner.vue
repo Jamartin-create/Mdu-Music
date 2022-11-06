@@ -92,7 +92,7 @@ onUnmounted(() => {
       overflow: hidden;
       border-radius: 10px;
       transition: all 0.3s ease-in-out;
-      z-index: 0;
+      z-index: -1;
       > img {
         display: none;
         width: 100%;
@@ -110,7 +110,7 @@ onUnmounted(() => {
       &.middle {
         width: 70%;
         height: 90%;
-        z-index: 100;
+        z-index: 1;
         > img {
           opacity: 1;
         }
@@ -118,12 +118,12 @@ onUnmounted(() => {
       &.left {
         left: 2%;
         transform: translateX(-10%) translateY(60%);
-        z-index: 50;
+        z-index: 0;
       }
       &.right {
         left: 98%;
         transform: translateX(-90%) translateY(60%);
-        z-index: 50;
+        z-index: 0;
       }
     }
 
@@ -162,7 +162,7 @@ onUnmounted(() => {
     width: 100%;
     display: flex;
     justify-content: center;
-    z-index: 1000;
+    z-index: 3;
     > span {
       width: 8px;
       height: 8px;
