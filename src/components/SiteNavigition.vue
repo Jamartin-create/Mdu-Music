@@ -6,6 +6,14 @@
         <RouterLink :to="{ name: 'home' }"> 发现 </RouterLink>
         <RouterLink :to="{ name: 'library' }"> 音乐库 </RouterLink>
       </nav>
+      <div class="navigate">
+        <button @click="routerChange(-1)">
+          <i class="fas fa-angle-left"></i>
+        </button>
+        <button @click="routerChange(1)">
+          <i class="fas fa-angle-right"></i>
+        </button>
+      </div>
       <div class="search-bar">
         <i class="fas fa-search icon"></i>
         <input
@@ -24,10 +32,17 @@ import { ref } from "vue";
 import { RouterLink, useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
+const route = useRoute();
 const keywords = ref<string>("");
+
+console.log(router);
 
 function enter() {
   router.push({ name: "search", query: { keywords: keywords.value } });
+}
+
+function routerChange(number: -1 | 1) {
+  router.go(number);
 }
 </script>
 
@@ -52,6 +67,31 @@ header {
       height: 100%;
       gap: 30px;
       font-size: 18px;
+    }
+    .navigate {
+      position: absolute;
+      top: 50%;
+      left: 20px;
+      transform: translateY(-50%);
+      > button {
+        margin: 5px;
+        width: 25px;
+        height: 25px;
+        background-color: transparent;
+        border-radius: 3px;
+        border: none;
+        transition: all 0.3s ease-in;
+        &:hover {
+          background-color: rgba($color: #000000, $alpha: 0.3);
+          color: #fff;
+        }
+        &:active {
+          transform: scale(0.6);
+        }
+        > i {
+          font-size: 20px;
+        }
+      }
     }
     .search-bar {
       position: absolute;
