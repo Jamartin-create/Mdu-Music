@@ -71,7 +71,7 @@ header {
     .navigate {
       position: absolute;
       top: 50%;
-      left: 20px;
+      left: 22%;
       transform: translateY(-50%);
       > button {
         margin: 5px;
@@ -96,7 +96,7 @@ header {
     .search-bar {
       position: absolute;
       top: 50%;
-      right: 20px;
+      right: 22%;
       transform: translateY(-50%);
       padding: 8px;
       border: 1px solid rgba($color: #000000, $alpha: 0.2);

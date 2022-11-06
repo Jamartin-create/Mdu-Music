@@ -20,17 +20,17 @@ description: 个人搭建第三方网易云音乐播放器
    - [ ] 邮箱验证码登录
 2. 搜索：
    - [x] 歌名搜索
-   - [ ] 歌单搜索
-   - [ ] 歌手搜索
-   - [ ] 专辑搜索
+   - [x] 歌单搜索
+   - [x] 歌手搜索
+   - [x] 专辑搜索
    - [ ] 歌词搜索
 3. 展示（需加入上拉加载）：
    - [x] 音乐列表展示
    - [ ] 专辑列表展示
-   - [ ] 歌单列表展示
+   - [x] 歌单列表展示
    - [ ] MV展示
 4. 个人中心：
-   - [ ] 收藏/喜欢歌单信息
+   - [x] 收藏/喜欢歌单信息
    - [ ] 收藏MV
    - [ ] 收藏专辑
 
@@ -136,7 +136,7 @@ export function removeCookie(key: string) {
 
 搜索的话会涉及到分页，考虑了很多种方法：
 
-1. ~~ 在pinia中存储一个分页的状态，但是因为不同页面可能分页的搜索不一样所以pass。 ~~
+1. 在pinia中存储一个分页的状态，但是因为不同页面可能分页的搜索不一样所以pass。
 2. 定义一个分页的 `type` 或 `interface` ，然后在需要搜索的页面去实现，然后传入api方法中即可。
 
 ```typescript
@@ -144,6 +144,29 @@ type searchPage = {
   limit: number;
   offset: number;
   keywords: string;
+}
+```
+
+#### 列表中的"加载更多"的实现
+
+该功能的实现需要做如下几步：
+
+1. 获取下一页的歌曲列表
+2. 将获取的下一页的歌曲列表push到list中
+
+实现：
+
+```javascript
+async function searchMusic() {
+  try {
+    const res: any = await searchByKeyWords({
+      ...searchPage,
+    });
+    const type: SearchType = tabComponents[curSelect.value].id;
+    Array.prototype.push.apply(list, lists.songs);
+  } catch (e) {
+    console.error(e);
+  }
 }
 ```
 
