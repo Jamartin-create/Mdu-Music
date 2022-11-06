@@ -1,9 +1,9 @@
 <template>
   <div
     class="img-container"
-    :class="
-      props.isHoverBlur ? 'is-hover-blur' : '' + ' ' + props.isMv ? 'is-mv' : ''
-    "
+    :class="`${props.isHoverBlur ? 'is-hover-blur' : ''} ${
+      props.isDefaultBlur ? 'is-default-blur' : ''
+    }`"
   >
     <img
       :src="props.url"
@@ -19,16 +19,18 @@
 </template>
 
 <script setup lang="ts">
-import { CSSProperties, reactive } from "vue";
+import { CSSProperties, reactive, watch } from "vue";
 const props = withDefaults(
   defineProps<{
     isRound?: boolean;
     isHoverBlur?: boolean;
+    isDefaultBlur?: boolean;
     isMv?: boolean;
     url: string;
     width: number;
   }>(),
   {
+    isDefaultBlur: false,
     isHoverBlur: true,
     isMv: false,
     isRound: false,
@@ -45,6 +47,13 @@ const style = reactive<CSSProperties>({
   width: props.width + "px",
   height: props.width + "px",
 });
+
+watch(
+  () => props.url,
+  () => {
+    shadowStyle.backgroundImage = `url(${props.url})`;
+  }
+);
 </script>
 
 <style scoped lang="scss">
@@ -52,11 +61,17 @@ const style = reactive<CSSProperties>({
   position: relative;
   img {
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: 12px;
     transition: 0.3s all;
     aspect-ratio: 1 / 1;
     &.is-round {
       border-radius: 50%;
+    }
+  }
+  &.is-default-blur {
+    .shadow {
+      transform: scale(0.95) translate(8px, 8px);
+      filter: blur(20px) opacity(0.6);
     }
   }
   &.is-hover-blur {
@@ -84,7 +99,7 @@ const style = reactive<CSSProperties>({
     background-size: cover;
     transition: 0.3s all;
     aspect-ratio: 1 / 1;
-    border-radius: 6px;
+    border-radius: 12px;
     &.is-round {
       border-radius: 50%;
     }

@@ -27,5 +27,12 @@ export default [
         meta: {
             requireLogin: false,
         }
+    }, {
+        path: '/playList',
+        name: 'playList',
+        component: () => import('../view/PagePlayList/index.vue'),
+        meta: {
+            requireLogin: false,
+        }
     }
 ]

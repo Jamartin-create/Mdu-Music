@@ -33,12 +33,8 @@
 <script setup lang="ts">
 import BgPic from "../../components/BgPic.vue";
 import PlayMusicList from "../../components/PlayMusicList.vue";
-import { onMounted } from "vue";
 import { UserStore } from "../../store/user";
 const userStore = UserStore();
-onMounted(() => {
-  console.log(userStore.playList);
-});
 </script>
 
 <style scoped lang="scss">

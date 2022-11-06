@@ -5,8 +5,8 @@
         v-for="item in props.list"
         :key="item.id"
         :id="item.id"
-        :album="item.album"
-        :artists="item.artists"
+        :album="item.album ? item.album : item.al"
+        :artists="item.artists ? item.artists : item.ar"
         :name="item.name"
       />
     </div>

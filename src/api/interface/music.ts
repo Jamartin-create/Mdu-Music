@@ -1,4 +1,22 @@
 /**
+ * @description 获取歌单详情请求参数
+ * @param id 歌单id
+ * @param s 歌单最近的s个收藏者
+ */
+export interface PlayListDetailParams {
+    id: number;
+    s?: number;
+}
+
+/**
+ * @description 分页获取歌单所有歌曲
+ */
+export interface PlayListPageParams {
+    id: number;
+    limit?: number;
+    offset?: number;
+}
+/**
  * @description 调用searchByKeywords时所需参数
  * @param keywords 搜索关键词
  * @param limit 返回数量，默认为30
