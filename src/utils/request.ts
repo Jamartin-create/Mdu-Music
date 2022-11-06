@@ -32,7 +32,7 @@ function requestInceptorsSuccess(config: AxiosRequestConfig) {
 function requestInceptorsError(error: any) {
     nprogress.done();
     // console.log("请求失败:", error)
-    return Promise.reject(error)
+    return Promise.reject(error.message)
 }
 
 /**

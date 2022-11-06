@@ -95,7 +95,6 @@ async function fetchAllSong() {
 async function fetchPlayListDetail() {
   try {
     const res: any = await fetchPlayListDetails({ id: searchPage.id });
-    console.log(res);
     const { playlist } = res;
     playListInfo.name = playlist.name;
     playListInfo.picUrl = playlist.coverImgUrl;
@@ -132,9 +131,9 @@ watch(
 
 const createTimeFormat = computed(() => {
   const date: Date = new Date(playListInfo.createTime!);
-  const year = date.getFullYear() ? date.getFullYear() : "0000";
-  const month = date.getMonth() ? date.getMonth() : "00";
-  const day = date.getDay() ? date.getDay() : "00";
+  const year = date.getFullYear() != null ? date.getFullYear() : "0000";
+  const month = date.getMonth() != null ? date.getMonth() + 1 : "0";
+  const day = date.getDay() != null ? date.getDay() : "00";
   return `${year}年${month}月${day}日`;
 });
 
@@ -178,7 +177,7 @@ fetchPlayListDetail();
         }
       }
       .description {
-        padding-left: 10px;
+        padding-right: 10px;
         line-height: 30px;
         max-height: 90px;
         margin-top: 20px;

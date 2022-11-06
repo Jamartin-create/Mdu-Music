@@ -26,7 +26,7 @@ const props = withDefaults(
     isHoverBlur?: boolean;
     isDefaultBlur?: boolean;
     isMv?: boolean;
-    url: string;
+    url?: string;
     width: number;
   }>(),
   {
@@ -50,8 +50,8 @@ const style = reactive<CSSProperties>({
 
 watch(
   () => props.url,
-  () => {
-    shadowStyle.backgroundImage = `url(${props.url})`;
+  (nv: any, ov: any) => {
+    shadowStyle.backgroundImage = `url(${nv})`;
   }
 );
 </script>
