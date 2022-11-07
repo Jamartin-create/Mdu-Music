@@ -1,5 +1,9 @@
 <template>
   <footer>
+    <div class="process">
+      <div class="passed" :style="passedStyle"></div>
+      <div class="dragger" :style="draggerStyle"></div>
+    </div>
     <div class="content">
       <div class="song-info">
         <BgPic
@@ -21,7 +25,7 @@
         <button>
           <i class="fas fa-step-backward"></i>
         </button>
-        <button class="center">
+        <button class="center" @click="togglePlayPause">
           <i
             class="fas"
             :class="musicStore.player.play ? ' fa-pause' : 'fa-play'"
@@ -36,17 +40,47 @@
           <i class="fas fa-volume-down"></i>
         </button>
         <div class="volume">
-          <div class="process"></div>
+          <div class="v-process"></div>
         </div>
       </div>
     </div>
   </footer>
+  <Player />
 </template>
 
 <script setup lang="ts">
 import BgPic from "./BgPic.vue";
+import Player from "./Player.vue";
 import { MusicStore } from "../store/music";
+import { CSSProperties, reactive, ref, watch } from "vue";
 const musicStore = MusicStore();
+
+function togglePlayPause() {
+  if (musicStore.playing) musicStore.pause();
+  else musicStore.play();
+}
+
+const draggerStyle = reactive<CSSProperties>({
+  left: "0%",
+});
+const passedStyle = reactive<CSSProperties>({
+  width: "0%",
+});
+
+function changeProcess(duration: number) {
+  draggerStyle.left = duration + "%";
+  passedStyle.width = duration + "%";
+}
+
+watch(
+  () => musicStore.curSong?.passDuration,
+  (nv: any, ov: any) => {
+    changeProcess(nv);
+  },
+  {
+    immediate: true,
+  }
+);
 </script>
 
 <style scoped lang="scss">
@@ -63,6 +97,36 @@ footer {
   z-index: 100;
   display: flex;
   justify-content: center;
+  .process {
+    position: absolute;
+    width: 100%;
+    height: 10px;
+    background-color: transparent;
+    .dragger {
+      position: absolute;
+      height: 10px;
+      width: 10px;
+      background-color: rgba($color: #fff, $alpha: 1);
+      box-shadow: 0 1px 10px rgba($color: #000000, $alpha: 0.3);
+      transform: translate(-50%, calc(-50% - 4px));
+      border-radius: 50%;
+      opacity: 0;
+    }
+    &:hover {
+      .passed {
+        height: 5px;
+        transform: translateY(-2px);
+      }
+      .dragger {
+        opacity: 1;
+      }
+    }
+    .passed {
+      height: 2px;
+      background-color: rgba(#000000, 0.3);
+      transition: all 0.3s ease;
+    }
+  }
   .content {
     width: 80%;
     display: flex;
@@ -113,7 +177,7 @@ footer {
         height: 4px;
         border-radius: 2px;
         margin-left: 10px;
-        .process {
+        .v-process {
           height: 100%;
           width: 60px;
           border-radius: 2px;

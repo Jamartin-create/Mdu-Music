@@ -29,6 +29,7 @@ export type SongInfo = {
     url: string;
     name: string;
     duration: number;
+    passDuration: number;
     picUrl: string;
     album: {
         id: number;

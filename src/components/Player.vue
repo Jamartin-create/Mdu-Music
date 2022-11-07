@@ -3,21 +3,33 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref, watch } from "vue";
+import { nextTick, onUnmounted, ref, watch } from "vue";
 import { MusicStore } from "../store/music";
 import { SongInfo } from "../store/interface/index";
+import { computed } from "@vue/reactivity";
 const musicStore = MusicStore();
 const player = ref<HTMLAudioElement>();
-
 const curMusicUrl = ref<string>();
+let musicDtInterval: any = null;
+curMusicUrl.value = musicStore.curSong?.url;
+
+function setMusicDtInterval() {
+  clearMusicDtInterval();
+  musicDtInterval = setInterval(() => {
+    const curDur = player.value!.currentTime!;
+    const dur = player.value?.duration!;
+    musicStore.changeDuration((curDur / dur) * 100);
+  }, 100);
+}
+
+function clearMusicDtInterval() {
+  clearInterval(musicDtInterval);
+}
 
 watch(
-  () => musicStore.curSong,
-  async (
-    newVal: SongInfo | null | undefined,
-    oldVal: SongInfo | null | undefined
-  ) => {
-    curMusicUrl.value = newVal?.url;
+  () => musicStore.curSong!.id,
+  async (nv: any, ov: any) => {
+    curMusicUrl.value = musicStore.songUrl;
     nextTick(() => {
       musicStore.pause();
       musicStore.play();
@@ -38,6 +50,10 @@ watch(
     deep: true,
   }
 );
+setMusicDtInterval();
+onUnmounted(() => {
+  clearMusicDtInterval();
+});
 </script>
 
 <style scoped></style>

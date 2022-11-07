@@ -3,8 +3,10 @@ import { RouterView } from "vue-router";
 import SiteNav from "./components/SiteNavigition.vue";
 import Toast from "./components/Toast.vue";
 import PlayerController from "./components/PlayerController.vue";
-import Player from "./components/Player.vue";
 import { UserStore } from "./store/user";
+import { MusicStore } from "./store/music";
+const musicStore = MusicStore();
+musicStore.player.play = false;
 const loadBasicData = async () => {
   const userStore = UserStore();
   await userStore.fetchUserAccount();
@@ -15,7 +17,6 @@ loadBasicData();
 
 <template>
   <SiteNav />
-  <Player />
   <main>
     <RouterView v-slot="{ Component }">
       <Transition name="page" mode="out-in">

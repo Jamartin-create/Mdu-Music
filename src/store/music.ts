@@ -22,6 +22,10 @@ export const MusicStore = defineStore({
             const songInfo = state.curSong as SongInfo;
             return songInfo.url;
         },
+        songPassed: (state) => {
+            const songInfo = state.curSong as SongInfo;
+            return songInfo.passDuration;
+        },
         playing: (state) => state.player.play,
         circleMode: (state) => state.player.circleMode
     },
@@ -45,6 +49,7 @@ export const MusicStore = defineStore({
                 url: urlRes.data[0].url,
                 name: songs[0].name,
                 duration: songs[0].dt,
+                passDuration: 0,
                 picUrl: songs[0].picUrl,
                 album: {
                     id: songs[0].al.id,
@@ -70,6 +75,9 @@ export const MusicStore = defineStore({
         },
         pause() {
             this.player.play = false;
+        },
+        changeDuration(curDur: number) {
+            this.curSong!.passDuration = curDur
         }
     },
     persist: piniaPersistConfig("MusicState")
