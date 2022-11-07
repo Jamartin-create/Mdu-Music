@@ -2,6 +2,7 @@
 import { RouterView } from "vue-router";
 import SiteNav from "./components/SiteNavigition.vue";
 import Toast from "./components/Toast.vue";
+import PlayerController from "./components/PlayerController.vue";
 import Player from "./components/Player.vue";
 import { UserStore } from "./store/user";
 const loadBasicData = async () => {
@@ -23,6 +24,7 @@ loadBasicData();
     </RouterView>
   </main>
   <Toast />
+  <PlayerController />
 </template>
 
 <style lang="scss">

@@ -49,6 +49,7 @@ export const MusicStore = defineStore({
                 album: {
                     id: songs[0].al.id,
                     name: songs[0].al.name,
+                    picUrl: songs[0].al.picUrl
                 },
                 alia: songs[0].alia,
                 artists: songs[0].ar.map((item: any) => {

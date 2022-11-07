@@ -30,6 +30,7 @@ body {
   padding: 1.5rem;
   width: 80%;
   min-width: 900px;
+  min-height: 90vh;
 }
 
 #nprogress .bar {

@@ -33,6 +33,7 @@ export type SongInfo = {
     album: {
         id: number;
         name: string;
+        picUrl: string;
     };
     alia: string;
     artists: {

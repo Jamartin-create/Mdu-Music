@@ -34,5 +34,12 @@ export default [
         meta: {
             requireLogin: false,
         }
+    }, {
+        path: '/setting',
+        name: 'setting',
+        component: () => import('../view/Setting/index.vue'),
+        meta: {
+            requireLogin: false,
+        }
     }
 ]
