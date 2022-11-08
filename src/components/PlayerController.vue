@@ -74,7 +74,7 @@ function processDragStart() {
 
 function dragMove(e: MouseEvent) {
   if (!processDraging.value) return;
-  if (processDraging.value) moveProcess(e.clientX);
+  if (processDraging.value) computedProcess(e.clientX);
 }
 
 function dragEnd() {
@@ -87,6 +87,8 @@ function computedProcess(clientWidth: number) {
   else if (clientWidth >= maxWidth) return maxWidth / processScale.value;
   else return Math.floor(clientWidth / processScale.value);
 }
+
+function changeCurrentTime() {}
 
 function togglePlayPause() {
   if (musicStore.playing) musicStore.pause();
