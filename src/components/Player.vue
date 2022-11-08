@@ -18,7 +18,7 @@ function setMusicDtInterval() {
   musicDtInterval = setInterval(() => {
     const curDur = player.value!.currentTime!;
     const dur = player.value?.duration!;
-    musicStore.changeDuration((curDur / dur) * 100);
+    musicStore.changeDuration(curDur / dur);
   }, 100);
 }
 

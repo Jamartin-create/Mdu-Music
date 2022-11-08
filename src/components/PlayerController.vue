@@ -1,8 +1,12 @@
 <template>
   <footer>
-    <div class="process">
+    <div ref="process" class="process" :class="processDraging ? 'active' : ''">
       <div class="passed" :style="passedStyle"></div>
-      <div class="dragger" :style="draggerStyle"></div>
+      <div
+        class="dragger"
+        :style="draggerStyle"
+        @mousedown="processDragStart"
+      ></div>
     </div>
     <div class="content">
       <div class="song-info">
@@ -52,8 +56,37 @@
 import BgPic from "./BgPic.vue";
 import Player from "./Player.vue";
 import { MusicStore } from "../store/music";
-import { CSSProperties, reactive, ref, watch } from "vue";
+import { computed, CSSProperties, reactive, ref, watch } from "vue";
 const musicStore = MusicStore();
+const process = ref<HTMLElement>();
+
+const processScale = computed(() => {
+  return 580000 / musicStore.curSong?.duration!;
+});
+
+const processDraging = ref<boolean>();
+window.onmousemove = dragMove;
+window.onmouseup = dragEnd;
+
+function processDragStart() {
+  processDraging.value = true;
+}
+
+function dragMove(e: MouseEvent) {
+  if (!processDraging.value) return;
+  if (processDraging.value) moveProcess(e.clientX);
+}
+
+function dragEnd() {
+  processDraging.value = false;
+}
+
+function computedProcess(clientWidth: number) {
+  const maxWidth: number = process.value?.getBoundingClientRect().width!;
+  if (clientWidth < 0) return 0;
+  else if (clientWidth >= maxWidth) return maxWidth / processScale.value;
+  else return Math.floor(clientWidth / processScale.value);
+}
 
 function togglePlayPause() {
   if (musicStore.playing) musicStore.pause();
@@ -68,13 +101,14 @@ const passedStyle = reactive<CSSProperties>({
 });
 
 function changeProcess(duration: number) {
-  draggerStyle.left = duration + "%";
-  passedStyle.width = duration + "%";
+  draggerStyle.left = duration * 100 + "%";
+  passedStyle.width = duration * 100 + "%";
 }
 
 watch(
   () => musicStore.curSong?.passDuration,
   (nv: any, ov: any) => {
+    if (processDraging.value) return;
     changeProcess(nv);
   },
   {
@@ -112,6 +146,7 @@ footer {
       border-radius: 50%;
       opacity: 0;
     }
+    &.active,
     &:hover {
       .passed {
         height: 5px;
