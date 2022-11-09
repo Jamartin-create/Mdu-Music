@@ -1,6 +1,11 @@
 <template>
   <footer>
-    <div ref="process" class="process" :class="processDraging ? 'active' : ''">
+    <div
+      ref="process"
+      class="process"
+      :class="processDraging ? 'active' : ''"
+      @mouseup="processMouseDown"
+    >
       <div class="passed" :style="passedStyle"></div>
       <div
         class="dragger"
@@ -49,20 +54,17 @@
       </div>
     </div>
   </footer>
-  <Player />
+  <Player ref="musicPlayer" />
 </template>
 
 <script setup lang="ts">
 import BgPic from "./BgPic.vue";
 import Player from "./Player.vue";
 import { MusicStore } from "../store/music";
-import { computed, CSSProperties, reactive, ref, watch } from "vue";
+import { CSSProperties, reactive, ref, watch } from "vue";
 const musicStore = MusicStore();
 const process = ref<HTMLElement>();
-
-const processScale = computed(() => {
-  return 580000 / musicStore.curSong?.duration!;
-});
+const musicPlayer = ref<InstanceType<typeof Player>>();
 
 const processDraging = ref<boolean>();
 window.onmousemove = dragMove;
@@ -74,21 +76,29 @@ function processDragStart() {
 
 function dragMove(e: MouseEvent) {
   if (!processDraging.value) return;
-  if (processDraging.value) computedProcess(e.clientX);
+  if (processDraging.value) changeProcess(computedProcess(e.clientX));
 }
 
-function dragEnd() {
+function dragEnd(e: MouseEvent) {
+  //调整音乐进度
+  if (processDraging.value)
+    musicPlayer.value?.changeCurrentTime(computedProcess(e.clientX));
   processDraging.value = false;
 }
 
-function computedProcess(clientWidth: number) {
-  const maxWidth: number = process.value?.getBoundingClientRect().width!;
-  if (clientWidth < 0) return 0;
-  else if (clientWidth >= maxWidth) return maxWidth / processScale.value;
-  else return Math.floor(clientWidth / processScale.value);
+//点击进度条控制进度
+function processMouseDown(e: MouseEvent) {
+  musicPlayer.value?.changeCurrentTime(computedProcess(e.clientX));
 }
 
-function changeCurrentTime() {}
+//获取dragger位置百分比
+function computedProcess(clientWidth: number) {
+  //减10是右侧的scrollbar
+  const maxWidth: number = process.value?.getBoundingClientRect().width! - 10;
+  if (clientWidth < 0) return 0;
+  else if (clientWidth >= maxWidth) return 1;
+  else return clientWidth / maxWidth;
+}
 
 function togglePlayPause() {
   if (musicStore.playing) musicStore.pause();
@@ -140,18 +150,18 @@ footer {
     background-color: transparent;
     .dragger {
       position: absolute;
-      height: 10px;
-      width: 10px;
+      height: 12px;
+      width: 12px;
       background-color: rgba($color: #fff, $alpha: 1);
       box-shadow: 0 1px 10px rgba($color: #000000, $alpha: 0.3);
-      transform: translate(-50%, calc(-50% - 4px));
+      transform: translate(-50%, calc(-50% - 5px));
       border-radius: 50%;
       opacity: 0;
     }
     &.active,
     &:hover {
       .passed {
-        height: 5px;
+        height: 6px;
         transform: translateY(-2px);
       }
       .dragger {
@@ -159,9 +169,9 @@ footer {
       }
     }
     .passed {
-      height: 2px;
+      height: 4px;
+      border-radius: 3px;
       background-color: rgba(#000000, 0.3);
-      transition: all 0.3s ease;
     }
   }
   .content {

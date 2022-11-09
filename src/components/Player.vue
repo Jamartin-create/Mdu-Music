@@ -5,8 +5,6 @@
 <script setup lang="ts">
 import { nextTick, onUnmounted, ref, watch } from "vue";
 import { MusicStore } from "../store/music";
-import { SongInfo } from "../store/interface/index";
-import { computed } from "@vue/reactivity";
 const musicStore = MusicStore();
 const player = ref<HTMLAudioElement>();
 const curMusicUrl = ref<string>();
@@ -25,6 +23,20 @@ function setMusicDtInterval() {
 function clearMusicDtInterval() {
   clearInterval(musicDtInterval);
 }
+
+function changeCurrentTime(duration: number) {
+  clearMusicDtInterval();
+  player.value!.currentTime = duration * player.value?.duration!;
+  setMusicDtInterval();
+}
+
+watch(
+  () => player.value?.paused,
+  (nv: any, ov: any) => {
+    if (nv) musicStore.pause();
+  },
+  { immediate: true }
+);
 
 watch(
   () => musicStore.curSong!.id,
@@ -53,6 +65,9 @@ watch(
 setMusicDtInterval();
 onUnmounted(() => {
   clearMusicDtInterval();
+});
+defineExpose({
+  changeCurrentTime,
 });
 </script>
 
