@@ -35,6 +35,13 @@ export default [
             requireLogin: false,
         }
     }, {
+        path: '/albumDetail',
+        name: 'albumDetail',
+        component: () => import('../view/PageAlbum/index.vue'),
+        meta: {
+            requireLogin: false,
+        }
+    }, {
         path: '/setting',
         name: 'setting',
         component: () => import('../view/Setting/index.vue'),

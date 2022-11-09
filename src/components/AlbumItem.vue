@@ -1,5 +1,5 @@
 <template>
-  <div class="col-list-item media-list-item">
+  <div class="col-list-item media-list-item" @click="toDetail">
     <div>
       <BgPic :url="props.blurPicUrl!" :width="70" :is-hover-blur="false" />
     </div>
@@ -11,7 +11,10 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from "vue-router";
 import BgPic from "./BgPic.vue";
+
+const router = useRouter();
 const props = defineProps<{
   id: number;
   name: string;
@@ -21,6 +24,10 @@ const props = defineProps<{
   picUrl?: string | undefined;
   blurPicUrl?: string | undefined;
 }>();
+
+function toDetail() {
+  router.push({ name: "albumDetail", query: { id: props.id } });
+}
 </script>
 
 <style scoped lang="scss">

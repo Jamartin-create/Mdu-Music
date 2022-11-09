@@ -42,3 +42,12 @@ export const fetchPlayListSongs = async (params: PlayListPageParams) => {
 export const fetchPlayListDetails = async (params: PlayListDetailParams) => {
     return request({ url: '/playlist/detail', method: 'get', params })
 }
+
+/**
+ * @description 获取专辑详情
+ * @param albumId 
+ * @returns 
+ */
+export const fetchAlbumDetails = async (albumId: number) => {
+    return request({ url: `/album?id=${albumId}`, method: 'get' })
+}
