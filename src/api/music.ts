@@ -1,5 +1,5 @@
 import request from '../utils/request'
-import { MusicFetchUrlParams, MusicKeyWordsParam, PlayListDetailParams, PlayListPageParams } from './interface/music'
+import { ArtistAlbums, MusicFetchUrlParams, MusicKeyWordsParam, PlayListDetailParams, PlayListPageParams } from './interface/music'
 
 /**
  * @description 根据关键词搜索
@@ -50,4 +50,20 @@ export const fetchPlayListDetails = async (params: PlayListDetailParams) => {
  */
 export const fetchAlbumDetails = async (albumId: number) => {
     return request({ url: `/album?id=${albumId}`, method: 'get' })
+}
+
+/**
+ * @description 获取歌手详情
+ * @param artistId 
+ * @returns 
+ */
+export const fetchArtistDetails = async (artistId: number) => {
+    return request({ url: `/artist/detail?id=${artistId}`, method: 'get' })
+}
+
+/**
+ * @description 获取歌手专辑
+ */
+export const fetchArtistAlbums = async (params: ArtistAlbums) => {
+    return request({ url: `/artist/album`, method: 'get', params })
 }

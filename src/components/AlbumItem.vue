@@ -33,6 +33,7 @@ function toDetail() {
 <style scoped lang="scss">
 .col-list-item {
   font-size: 22px;
+  padding: 10px 10px;
   > div {
     &:first-of-type {
       flex: 1;

@@ -42,6 +42,13 @@ export default [
             requireLogin: false,
         }
     }, {
+        path: '/artistDetail',
+        name: 'artistDetail',
+        component: () => import('../view/PageArtist/index.vue'),
+        meta: {
+            requireLogin: false,
+        }
+    }, {
         path: '/setting',
         name: 'setting',
         component: () => import('../view/Setting/index.vue'),

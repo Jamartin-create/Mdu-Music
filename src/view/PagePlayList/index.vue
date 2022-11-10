@@ -47,10 +47,7 @@
 import { computed } from "@vue/reactivity";
 import { watch, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
-import {
-  PlayListPageParams,
-  PlayListDetailParams,
-} from "../../api/interface/music";
+import { PlayListPageParams } from "../../api/interface/music";
 import { fetchPlayListSongs, fetchPlayListDetails } from "../../api/music";
 import BgPic from "../../components/BgPic.vue";
 import MusicList from "../../components/MusicList.vue";
