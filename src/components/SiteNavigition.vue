@@ -54,7 +54,7 @@ header {
   position: sticky;
   top: 0;
   box-shadow: 0px 2px 10px rgba($color: #000000, $alpha: 0.3);
-  height: 60px;
+  height: 70px;
   background-color: $primaryColor;
   background: hsla(0, 0%, 100%, 0.3);
   backdrop-filter: blur(6px);
@@ -76,8 +76,8 @@ header {
       transform: translateY(-50%);
       > button {
         margin: 5px;
-        width: 25px;
-        height: 25px;
+        width: 50px;
+        height: 50px;
         background-color: transparent;
         border-radius: 3px;
         border: none;
@@ -90,7 +90,7 @@ header {
           transform: scale(0.6);
         }
         > i {
-          font-size: 20px;
+          font-size: 30px;
         }
       }
     }

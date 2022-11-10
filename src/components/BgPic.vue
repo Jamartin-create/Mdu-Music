@@ -5,11 +5,11 @@
       props.isDefaultBlur ? 'is-default-blur' : ''
     }`"
   >
-    <img
-      :src="props.url"
+    <div
+      class="img"
       :class="props.isRound ? 'is-round' : ''"
       :style="style"
-    />
+    ></div>
     <div
       class="shadow"
       :class="props.isRound ? 'is-round' : ''"
@@ -44,6 +44,7 @@ const shadowStyle = reactive<CSSProperties>({
 });
 
 const style = reactive<CSSProperties>({
+  backgroundImage: `url(${props.url})`,
   width: props.width + "px",
   height: props.width + "px",
 });
@@ -52,6 +53,7 @@ watch(
   () => props.url,
   (nv: any, ov: any) => {
     shadowStyle.backgroundImage = `url(${nv})`;
+    style.backgroundImage = `url(${nv})`;
   }
 );
 </script>
@@ -59,11 +61,13 @@ watch(
 <style scoped lang="scss">
 .img-container {
   position: relative;
-  img {
+  .img {
     cursor: pointer;
     border-radius: 12px;
     transition: 0.3s all;
-    aspect-ratio: 1 / 1;
+    z-index: 10;
+    background-position: center;
+    background-size: cover;
     &.is-round {
       border-radius: 50%;
     }
@@ -75,7 +79,7 @@ watch(
     }
   }
   &.is-hover-blur {
-    img {
+    .img {
       &:hover + .shadow {
         transform: scale(0.95) translate(8px, 8px);
         filter: blur(10px) opacity(0.6);
@@ -97,8 +101,8 @@ watch(
     top: 0;
     z-index: -1;
     background-size: cover;
+    background-position: center;
     transition: 0.3s all;
-    aspect-ratio: 1 / 1;
     border-radius: 12px;
     &.is-round {
       border-radius: 50%;
