@@ -14,6 +14,9 @@
         "
         v-for="(banner, index) in props.list"
         :key="index"
+        @click="
+          useToPage(banner.targetType as number, banner.targetId as number)
+        "
       >
         <img :src="banner.imageUrl" alt="" loading="lazy" />
       </div>
@@ -39,7 +42,11 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from "vue";
+import { useRouter } from "vue-router";
+import { MusicStore } from "../../../store/music";
 
+const router = useRouter();
+const musicStore = MusicStore();
 const props = defineProps<{
   list: any[];
 }>();
@@ -63,7 +70,17 @@ function changePage(pageIndex: number) {
   setBannerInterval();
 }
 
+function useToPage(targetType: number, targetId: number) {
+  targetType == 1 && musicStore.changeMusic(targetId);
+  targetType == 10 &&
+    router.push({ name: "albumDetail", query: { id: targetId } });
+}
+
 setBannerInterval();
+
+onMounted(() => {
+  console.log(props);
+});
 
 onUnmounted(() => {
   clearInterval(bannerInterval);
