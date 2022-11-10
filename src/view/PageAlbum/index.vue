@@ -58,8 +58,8 @@ async function fetchAlbumDetail() {
   try {
     const albumId: any = route.query.id;
     const res: any = await fetchAlbumDetails(albumId as number);
-    console.log(res);
     const album = res.album;
+
     albumInfo.picUrl = album.picUrl;
     albumInfo.description = album.description;
     albumInfo.shareCount = album.info.shareCount;

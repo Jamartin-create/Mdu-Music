@@ -47,7 +47,6 @@ async function fetchRecomendPlayList() {
 async function fetchRecomendNewSongs() {
   try {
     const res: any = await fetchRecomNewSongs(12);
-    console.log(res);
     Array.prototype.push.apply(
       recomendNewSongs,
       res.result.map((item: any) => item.song)

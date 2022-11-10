@@ -30,13 +30,10 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { RouterLink, useRouter, useRoute } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 
 const router = useRouter();
-const route = useRoute();
 const keywords = ref<string>("");
-
-console.log(router);
 
 function enter() {
   router.push({ name: "search", query: { keywords: keywords.value } });
