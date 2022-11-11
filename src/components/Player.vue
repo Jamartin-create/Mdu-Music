@@ -39,7 +39,7 @@ watch(
 );
 
 watch(
-  () => musicStore.curSong!.id,
+  () => musicStore.curSong?.id,
   async (nv: any, ov: any) => {
     curMusicUrl.value = musicStore.songUrl;
     nextTick(() => {
@@ -62,7 +62,7 @@ watch(
     deep: true,
   }
 );
-setMusicDtInterval();
+if (musicStore.curSong != null) setMusicDtInterval();
 onUnmounted(() => {
   clearMusicDtInterval();
 });
@@ -71,4 +71,6 @@ defineExpose({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

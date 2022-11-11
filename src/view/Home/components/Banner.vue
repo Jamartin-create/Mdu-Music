@@ -1,23 +1,17 @@
 <template>
   <div class="banner">
     <div class="banner-wrapper">
-      <div
-        class="banner-item"
-        :class="
-          index === pageChose
-            ? 'middle'
-            : index === prePage
+      <div class="banner-item" :class="
+        index === pageChose
+          ? 'middle'
+          : index === prePage
             ? 'left'
             : index === nextPage
-            ? 'right'
-            : ''
-        "
-        v-for="(banner, index) in props.list"
-        :key="index"
-        @click="
-          useToPage(banner.targetType as number, banner.targetId as number)
-        "
-      >
+              ? 'right'
+              : ''
+      " v-for="(banner, index) in props.list" :key="index" @click="
+  useToPage(banner)
+">
         <img :src="banner.imageUrl" alt="" loading="lazy" />
       </div>
 
@@ -29,12 +23,8 @@
       </button>
 
       <div class="pagenation-wrapper">
-        <span
-          :class="pageChose === index ? 'chose' : ''"
-          v-for="(item, index) in props.list"
-          :key="index"
-          @mouseover="changePage(index)"
-        ></span>
+        <span :class="pageChose === index ? 'chose' : ''" v-for="(item, index) in props.list" :key="index"
+          @mouseover="changePage(index)"></span>
       </div>
     </div>
   </div>
@@ -70,13 +60,19 @@ function changePage(pageIndex: number) {
   setBannerInterval();
 }
 
-function useToPage(targetType: number, targetId: number) {
+function useToPage(banner: any) {
+  const { targetType, targetId, url } = banner
   targetType == 1 && musicStore.changeMusic(targetId);
   targetType == 10 &&
     router.push({ name: "albumDetail", query: { id: targetId } });
+  targetType == 3000 && window.open(url)
 }
 
 setBannerInterval();
+
+onMounted(() => {
+  console.log(props)
+})
 
 onUnmounted(() => {
   clearInterval(bannerInterval);
@@ -90,10 +86,12 @@ onUnmounted(() => {
   height: 300px;
   max-width: 1200px;
   min-width: 800px;
+
   .banner-wrapper {
     position: relative;
     height: 100%;
     width: 100%;
+
     .banner-item {
       position: absolute;
       bottom: 50%;
@@ -106,33 +104,39 @@ onUnmounted(() => {
       border-radius: 10px;
       transition: all 0.3s ease-in-out;
       z-index: -1;
-      > img {
+
+      >img {
         display: none;
         width: 100%;
         border-radius: 10px;
         opacity: 0.5;
         object-fit: cover;
       }
+
       &.middle,
       &.left,
       &.right {
-        > img {
+        >img {
           display: block;
         }
       }
+
       &.middle {
         width: 70%;
         height: 90%;
         z-index: 1;
-        > img {
+
+        >img {
           opacity: 1;
         }
       }
+
       &.left {
         left: 2%;
         transform: translateX(-10%) translateY(60%);
         z-index: 0;
       }
+
       &.right {
         left: 98%;
         transform: translateX(-90%) translateY(60%);
@@ -155,20 +159,24 @@ onUnmounted(() => {
       border-radius: 50%;
       background-color: transparent;
       transition: var(--tran-03);
+
       &:hover {
         color: rgb(233, 233, 233);
         background-color: rgba(0, 0, 0, 0.2);
       }
     }
+
     .left-arrow {
       left: 2%;
       transform: translateY(-50%);
     }
+
     .right-arrow {
       right: 2%;
       transform: translateY(-50%);
     }
   }
+
   .pagenation-wrapper {
     position: absolute;
     top: 85%;
@@ -176,12 +184,14 @@ onUnmounted(() => {
     display: flex;
     justify-content: center;
     z-index: 3;
-    > span {
+
+    >span {
       width: 8px;
       height: 8px;
       border-radius: 50%;
       margin: 0 4px;
       background-color: rgba(0, 0, 0, 0.5);
+
       &.chose {
         background-color: #da2828;
       }
