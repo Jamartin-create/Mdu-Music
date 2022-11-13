@@ -7,7 +7,12 @@
     </div>
     <div class="content-box">
       <div class="title">最新单曲 <i class="fas fa-angle-right"></i></div>
-      <MusicList :list="recomendNewSongs" :show-loading="true" />
+      <MusicList
+        :list="recomendNewSongs"
+        :from-play-list-id="0"
+        :from-play-list-type="'SL'"
+        :show-loading="true"
+      />
     </div>
   </div>
 </template>

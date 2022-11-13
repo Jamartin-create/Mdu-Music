@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onUnmounted, ref, watch } from "vue";
+import { nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import { MusicStore } from "../store/music";
 const musicStore = MusicStore();
 const player = ref<HTMLAudioElement>();
@@ -28,6 +28,10 @@ function changeCurrentTime(duration: number) {
   clearMusicDtInterval();
   player.value!.currentTime = duration * player.value?.duration!;
   setMusicDtInterval();
+}
+
+function musicEnded() {
+  musicStore.next();
 }
 
 watch(
@@ -63,6 +67,11 @@ watch(
   }
 );
 setMusicDtInterval();
+onMounted(() => {
+  player.value!.onended = () => {
+    musicEnded();
+  };
+});
 onUnmounted(() => {
   clearMusicDtInterval();
 });
