@@ -7,6 +7,8 @@
         :list="list"
         :no-more="noMore"
         :loading="searchLoading"
+        :from-play-list-id="0"
+        :from-play-list-type="'SL'"
         @load-more="loadMore"
       ></component>
     </Transition>

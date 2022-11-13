@@ -9,6 +9,7 @@ export const MusicStore = defineStore({
     id: "MusicStore",
     state: (): MusicState => ({
         curSong: null,
+        curSongIdx: 0,
         curPlayList: [],
         curPlayListId: null,
         songLevel: 'standard',
@@ -31,41 +32,51 @@ export const MusicStore = defineStore({
     },
     actions: {
         async changeMusic(musicId: number) {
-            if (musicId == this.curSong?.id) return;
-            const isUse: any = await checkMusicUseful(musicId);
-            if (!isUse.success) {
-                const sysStore = SysStore();
-                sysStore.showSeconds(3000, "暂无版权")
-                return;
+            const sysStore = SysStore();
+            try {
+                if (musicId == this.curSong?.id) return;
+                const detailRes: any = await fetchMusicDetail(musicId)
+                const isUse: any = await checkMusicUseful(musicId);
+                if (!isUse.success) {
+                    sysStore.showSeconds(3000, `歌曲 '${detailRes.songs[0].name}' 暂无版权`)
+                    return false;
+                }
+                const urlRes: any = await fetchMusicUrl({
+                    id: musicId,
+                    level: this.songLevel
+                });
+                if (detailRes.code != 200 || detailRes.code != 200) {
+                    sysStore.showSeconds(3000, "获取音乐信息异常")
+                    return false;
+                }
+                const { songs } = detailRes;
+                const songInfo: SongInfo = {
+                    id: songs[0].id,
+                    url: urlRes.data[0].url,
+                    name: songs[0].name,
+                    duration: songs[0].dt,
+                    passDuration: 0,
+                    picUrl: songs[0].picUrl,
+                    album: {
+                        id: songs[0].al.id,
+                        name: songs[0].al.name,
+                        picUrl: songs[0].al.picUrl
+                    },
+                    alia: songs[0].alia,
+                    artists: songs[0].ar.map((item: any) => {
+                        return { id: item.id, name: item.name }
+                    })
+                }
+                this.curSong = songInfo;
+                return true
+            } catch (error) {
+                console.error(error)
             }
-            const detailRes: any = await fetchMusicDetail(musicId)
-            const urlRes: any = await fetchMusicUrl({
-                id: musicId,
-                level: this.songLevel
-            });
-            const { songs } = detailRes;
-            const songInfo: SongInfo = {
-                id: songs[0].id,
-                url: urlRes.data[0].url,
-                name: songs[0].name,
-                duration: songs[0].dt,
-                passDuration: 0,
-                picUrl: songs[0].picUrl,
-                album: {
-                    id: songs[0].al.id,
-                    name: songs[0].al.name,
-                    picUrl: songs[0].al.picUrl
-                },
-                alia: songs[0].alia,
-                artists: songs[0].ar.map((item: any) => {
-                    return { id: item.id, name: item.name }
-                })
-            }
-            this.curSong = songInfo;
         },
-        changePlayList(playList: any[], playListId: number) {
+        changePlayList(playList: any[], playListId: number, curSongIdx: number) {
             this.curPlayList = playList;
             this.curPlayListId = playListId;
+            this.curSongIdx = curSongIdx;
         },
         changeCircleMode(circleMode: CircleMode) {
             this.player.circleMode = circleMode;
@@ -75,6 +86,14 @@ export const MusicStore = defineStore({
         },
         pause() {
             this.player.play = false;
+        },
+        async next() {
+            this.curSongIdx = (this.curSongIdx + 1) % this.curPlayList.length;
+            if (!await this.changeMusic(this.curPlayList[this.curSongIdx].id)) this.next()
+        },
+        async prev() {
+            this.curSongIdx = (this.curSongIdx - 1 + this.curPlayList.length) % this.curPlayList.length;
+            if (!await this.changeMusic(this.curPlayList[this.curSongIdx].id)) this.prev()
         },
         changeDuration(curDur: number) {
             this.curSong!.passDuration = curDur

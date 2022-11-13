@@ -35,10 +35,12 @@
       </div>
     </div>
     <MusicList
-      @load-more="loadMore"
       :list="musicList"
       :loading="searchLoading"
       :no-more="noMore"
+      :from-play-list-id="searchPage.id"
+      :from-play-list-type="'PL'"
+      @load-more="loadMore"
     />
   </div>
 </template>
@@ -55,7 +57,6 @@ const route = useRoute();
 
 const noMore = ref<boolean>(false);
 const searchLoading = ref<boolean>(false);
-const pageLeave = ref<boolean>(false);
 const musicList = reactive<any[]>([]);
 const playListInfo = reactive<{
   name: string;
@@ -123,7 +124,7 @@ watch(
   () => route.query.id,
   (nv: any, ov: any) => {
     if (route.path.indexOf("playList") == -1) return;
-    searchPage.id = nv as number;
+    searchPage.id = parseInt(nv) as number;
   },
   { immediate: true }
 );

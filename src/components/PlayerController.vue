@@ -31,7 +31,7 @@
         </div>
       </div>
       <div class="controller">
-        <button>
+        <button @click="prev">
           <i class="fas fa-step-backward"></i>
         </button>
         <button class="center" @click="togglePlayPause">
@@ -40,7 +40,7 @@
             :class="musicStore.player.play ? ' fa-pause' : 'fa-play'"
           ></i>
         </button>
-        <button>
+        <button @click="next">
           <i class="fas fa-step-forward"></i>
         </button>
       </div>
@@ -69,6 +69,13 @@ const musicPlayer = ref<InstanceType<typeof Player>>();
 const processDraging = ref<boolean>();
 window.onmousemove = dragMove;
 window.onmouseup = dragEnd;
+
+function next() {
+  musicStore.next();
+}
+function prev() {
+  musicStore.prev();
+}
 
 function processDragStart() {
   processDraging.value = true;

@@ -16,6 +16,7 @@ export interface SysState {
 
 export interface MusicState {
     curSong: SongInfo | null;
+    curSongIdx: number;
     curPlayList: any[];
     curPlayListId: number | null;
     songLevel: MusicLevelType;

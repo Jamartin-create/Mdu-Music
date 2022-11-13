@@ -26,7 +26,12 @@
         </div>
       </div>
     </div>
-    <MusicList :list="musicList" :show-loading="true" />
+    <MusicList
+      :list="musicList"
+      :from-play-list-id="albumInfo.id"
+      :from-play-list-type="'AL'"
+      :show-loading="true"
+    />
   </div>
 </template>
 
@@ -42,6 +47,7 @@ const route = useRoute();
 const musicList = reactive<any[]>([]);
 
 const albumInfo = reactive<{
+  id: number;
   picUrl: string;
   name: string;
   size?: number;
@@ -50,6 +56,7 @@ const albumInfo = reactive<{
   publishTime?: number;
   artists?: any[];
 }>({
+  id: 0,
   picUrl: "",
   name: "",
 });
@@ -57,9 +64,9 @@ const albumInfo = reactive<{
 async function fetchAlbumDetail() {
   try {
     const albumId: any = route.query.id;
+    albumInfo.id = parseInt(albumId);
     const res: any = await fetchAlbumDetails(albumId as number);
     const album = res.album;
-
     albumInfo.picUrl = album.picUrl;
     albumInfo.description = album.description;
     albumInfo.shareCount = album.info.shareCount;

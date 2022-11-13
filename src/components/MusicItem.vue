@@ -9,6 +9,7 @@
 <script setup lang="ts">
 import { nextTick } from "vue";
 import { MusicStore } from "../store/music";
+const emit = defineEmits(["chose-music"]);
 const props = defineProps<{
   id: number;
   name: string;
@@ -19,6 +20,7 @@ const props = defineProps<{
 function changeMusicAndList() {
   const musicStore = MusicStore();
   musicStore.changeMusic(props.id);
+  emit("chose-music");
 }
 </script>
 
