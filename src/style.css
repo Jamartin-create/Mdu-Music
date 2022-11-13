@@ -136,16 +136,16 @@ body {
 }
 
 ::-webkit-scrollbar {
-  max-width: 10px;
-  height: max-content;
+  /* max-width: 10px;
+  height: max-content; */
+  display: none;
 }
 
-::-webkit-scrollbar-thumb {
+/* ::-webkit-scrollbar-thumb {
   background-color: #d6dee1;
   border-radius: 20px;
 }
 
 ::-webkit-scrollbar-track {
-  /* background-color: rgba(0, 0, 0, 0.2); */
   background-color: transparent;
-}
+} */

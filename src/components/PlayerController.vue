@@ -1,16 +1,16 @@
 <template>
-  <footer>
+  <footer @click="openLryics">
     <div
       ref="process"
       class="process"
       :class="processDraging ? 'active' : ''"
-      @mouseup="processMouseDown"
+      @mouseup.stop="processMouseDown"
     >
       <div class="passed" :style="passedStyle"></div>
       <div
         class="dragger"
         :style="draggerStyle"
-        @mousedown="processDragStart"
+        @mousedown.stop="processDragStart"
       ></div>
     </div>
     <div class="content">
@@ -31,16 +31,16 @@
         </div>
       </div>
       <div class="controller">
-        <button @click="prev">
+        <button @click.stop="prev">
           <i class="fas fa-step-backward"></i>
         </button>
-        <button class="center" @click="togglePlayPause">
+        <button class="center" @click.stop="togglePlayPause">
           <i
             class="fas"
             :class="musicStore.player.play ? ' fa-pause' : 'fa-play'"
           ></i>
         </button>
-        <button @click="next">
+        <button @click.stop="next">
           <i class="fas fa-step-forward"></i>
         </button>
       </div>
@@ -65,10 +65,14 @@ import { CSSProperties, reactive, ref, watch } from "vue";
 const musicStore = MusicStore();
 const process = ref<HTMLElement>();
 const musicPlayer = ref<InstanceType<typeof Player>>();
-
 const processDraging = ref<boolean>();
+const emits = defineEmits(["toggle-lryics"]);
 window.onmousemove = dragMove;
 window.onmouseup = dragEnd;
+
+function openLryics() {
+  emits("toggle-lryics");
+}
 
 function next() {
   musicStore.next();
@@ -147,7 +151,7 @@ footer {
   background-color: $primaryColor;
   background: hsla(0, 0%, 100%, 0.3);
   backdrop-filter: blur(20px);
-  z-index: 100;
+  z-index: 99;
   display: flex;
   justify-content: center;
   .process {

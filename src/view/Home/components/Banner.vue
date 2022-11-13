@@ -1,17 +1,21 @@
 <template>
   <div class="banner">
     <div class="banner-wrapper">
-      <div class="banner-item" :class="
-        index === pageChose
-          ? 'middle'
-          : index === prePage
+      <div
+        class="banner-item"
+        :class="
+          index === pageChose
+            ? 'middle'
+            : index === prePage
             ? 'left'
             : index === nextPage
-              ? 'right'
-              : ''
-      " v-for="(banner, index) in props.list" :key="index" @click="
-  useToPage(banner)
-">
+            ? 'right'
+            : ''
+        "
+        v-for="(banner, index) in props.list"
+        :key="index"
+        @click="useToPage(banner)"
+      >
         <img :src="banner.imageUrl" alt="" loading="lazy" />
       </div>
 
@@ -23,8 +27,12 @@
       </button>
 
       <div class="pagenation-wrapper">
-        <span :class="pageChose === index ? 'chose' : ''" v-for="(item, index) in props.list" :key="index"
-          @mouseover="changePage(index)"></span>
+        <span
+          :class="pageChose === index ? 'chose' : ''"
+          v-for="(item, index) in props.list"
+          :key="index"
+          @mouseover="changePage(index)"
+        ></span>
       </div>
     </div>
   </div>
@@ -61,18 +69,18 @@ function changePage(pageIndex: number) {
 }
 
 function useToPage(banner: any) {
-  const { targetType, targetId, url } = banner
+  const { targetType, targetId, url } = banner;
   targetType == 1 && musicStore.changeMusic(targetId);
   targetType == 10 &&
     router.push({ name: "albumDetail", query: { id: targetId } });
-  targetType == 3000 && window.open(url)
+  targetType == 3000 && window.open(url);
 }
 
 setBannerInterval();
 
 onMounted(() => {
-  console.log(props)
-})
+  console.log(props);
+});
 
 onUnmounted(() => {
   clearInterval(bannerInterval);
@@ -105,7 +113,7 @@ onUnmounted(() => {
       transition: all 0.3s ease-in-out;
       z-index: -1;
 
-      >img {
+      > img {
         display: none;
         width: 100%;
         border-radius: 10px;
@@ -116,7 +124,7 @@ onUnmounted(() => {
       &.middle,
       &.left,
       &.right {
-        >img {
+        > img {
           display: block;
         }
       }
@@ -126,7 +134,7 @@ onUnmounted(() => {
         height: 90%;
         z-index: 1;
 
-        >img {
+        > img {
           opacity: 1;
         }
       }
@@ -148,7 +156,7 @@ onUnmounted(() => {
     .right-arrow {
       position: absolute;
       top: 50%;
-      z-index: 200;
+      z-index: 50;
       width: 40px;
       height: 40px;
       font-size: 15px;
@@ -185,7 +193,7 @@ onUnmounted(() => {
     justify-content: center;
     z-index: 3;
 
-    >span {
+    > span {
       width: 8px;
       height: 8px;
       border-radius: 50%;

@@ -50,6 +50,7 @@ export const MusicStore = defineStore({
                     return false;
                 }
                 const { songs } = detailRes;
+                console.log(songs)
                 const songInfo: SongInfo = {
                     id: songs[0].id,
                     url: urlRes.data[0].url,
