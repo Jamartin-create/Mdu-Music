@@ -43,7 +43,7 @@ watch(
 );
 
 watch(
-  () => musicStore.curSong!.id,
+  () => musicStore.curSong?.id,
   async (nv: any, ov: any) => {
     curMusicUrl.value = musicStore.songUrl;
     nextTick(() => {
@@ -66,12 +66,13 @@ watch(
     deep: true,
   }
 );
-setMusicDtInterval();
 onMounted(() => {
   player.value!.onended = () => {
     musicEnded();
   };
 });
+
+if (musicStore.curSong != null) setMusicDtInterval();
 onUnmounted(() => {
   clearMusicDtInterval();
 });
