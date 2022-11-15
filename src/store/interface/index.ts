@@ -19,6 +19,10 @@ export interface MusicState {
     curSongIdx: number;
     curPlayList: any[];
     curPlayListId: number | null;
+    lyric: {
+        timeLine: number[],
+        lyrics: string[],
+    };
     songLevel: MusicLevelType;
     player: {
         play: boolean;

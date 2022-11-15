@@ -146,7 +146,7 @@ $secondaryColor: var(--second-color);
 footer {
   position: sticky;
   bottom: 0;
-  height: 90px;
+  height: 115px;
   width: 100%;
   background-color: $primaryColor;
   background: hsla(0, 0%, 100%, 0.3);

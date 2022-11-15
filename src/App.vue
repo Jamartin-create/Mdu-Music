@@ -37,7 +37,9 @@ loadBasicData();
       </Transition>
     </RouterView>
   </main>
-  <PlayerController @toggle-lryics="showLryicsPage" />
+  <Teleport to="body">
+    <PlayerController @toggle-lryics="showLryicsPage" />
+  </Teleport>
 </template>
 
 <style lang="scss">

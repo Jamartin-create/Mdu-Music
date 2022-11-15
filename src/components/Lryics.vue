@@ -50,7 +50,7 @@ const props = defineProps<{
   left: 0;
   height: 100%;
   width: 100%;
-  transform: translateY(100%);
+  transform: translateY(120%);
   transition: all 1s ease;
   background-color: #fff;
 }

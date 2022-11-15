@@ -67,3 +67,10 @@ export const fetchArtistDetails = async (artistId: number) => {
 export const fetchArtistAlbums = async (params: ArtistAlbums) => {
     return request({ url: `/artist/album`, method: 'get', params })
 }
+
+/**
+ * @description 获取歌词
+ */
+export const fetchMusicLryic = async (musicId: number) => {
+    return request({ url: `/lyric?id=${musicId}`, method: 'get' })
+}

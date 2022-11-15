@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
 import { CircleMode, MusicState, SongInfo } from './interface'
-import { fetchMusicUrl, fetchMusicDetail, checkMusicUseful } from '../api/music'
+import { fetchMusicUrl, fetchMusicDetail, checkMusicUseful, fetchMusicLryic } from '../api/music'
 import piniaPersistConfig from '../config/piniaPersist'
 import { SysStore } from './sys'
+import { parseLryic } from '../utils/lryics'
 
 
 export const MusicStore = defineStore({
@@ -13,6 +14,10 @@ export const MusicStore = defineStore({
         curPlayList: [],
         curPlayListId: null,
         songLevel: 'standard',
+        lyric: {
+            timeLine: [],
+            lyrics: [],
+        },
         player: {
             play: false,
             circleMode: 'LISTCIRCLE',
@@ -35,6 +40,7 @@ export const MusicStore = defineStore({
             const sysStore = SysStore();
             try {
                 if (musicId == this.curSong?.id) return;
+                this.fetchMusicLryic(musicId)
                 const detailRes: any = await fetchMusicDetail(musicId)
                 const isUse: any = await checkMusicUseful(musicId);
                 if (!isUse.success) {
@@ -50,7 +56,6 @@ export const MusicStore = defineStore({
                     return false;
                 }
                 const { songs } = detailRes;
-                console.log(songs)
                 const songInfo: SongInfo = {
                     id: songs[0].id,
                     url: urlRes.data[0].url,
@@ -72,6 +77,16 @@ export const MusicStore = defineStore({
                 return true
             } catch (error) {
                 console.error(error)
+            }
+        },
+        async fetchMusicLryic(musicId: number) {
+            try {
+                const res: any = await fetchMusicLryic(musicId);
+                const data = parseLryic(res.lrc.lyric);
+                this.lyric.timeLine = data.timeLine
+                this.lyric.lyrics = data.lyric
+            } catch (error) {
+
             }
         },
         changePlayList(playList: any[], playListId: number, curSongIdx: number) {
