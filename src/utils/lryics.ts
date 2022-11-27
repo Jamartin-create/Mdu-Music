@@ -19,6 +19,6 @@ function timeTranslate(time: string): number {
     let sum = 0;
     sum += parseInt(tr[1]);
     sum += min * 60 * 1000;
-    sum += sec * 100
-    return sum;
+    sum += sec * 1000
+    return isNaN(sum) ? new Date().getTime() : sum;
 }

@@ -4,7 +4,7 @@
       ref="process"
       class="process"
       :class="processDraging ? 'active' : ''"
-      @mouseup="processMouseDown"
+      @mouseup.stop="processMouseDown"
       @click.stop=""
     >
       <div class="passed" :style="passedStyle"></div>

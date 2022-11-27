@@ -12,16 +12,19 @@
       <div class="title">{{ musicStore.curSong?.name }}</div>
       <div class="ctl-btn"></div>
     </div>
-    <div class="lyrics">
-      <div
-        class="lyric"
-        v-for="(lyric, index) in lyrics"
-        :class="{
-          active: index === highLightLyric,
-        }"
-        :key="lyric.time"
-      >
-        {{ lyric.lyric }}
+    <div class="lryic-wrapper">
+      <div class="lyrics" :style="lryStyle">
+        <div
+          class="lyric"
+          v-for="(lyric, index) in lyrics"
+          :class="{
+            active: index === highLightLyric,
+          }"
+          ref="lryicItem"
+          :key="lyric.time"
+        >
+          {{ lyric.lyric }}
+        </div>
       </div>
     </div>
   </div>
@@ -31,33 +34,90 @@
 import BgPic from "./BgPic.vue";
 import { MusicStore } from "../store/music";
 import { Lyric } from "../store/interface";
-import { computed, reactive, watch, ref } from "vue";
+import { computed, reactive, watch, ref, CSSProperties } from "vue";
 const musicStore = MusicStore();
 const emits = defineEmits(["un-show"]);
 const props = defineProps<{
   show: Boolean;
 }>();
 let interval: any = null;
-const highLightLyric = ref<number>(-1);
-const lyrics = reactive<Lyric[]>(musicStore.lyric);
+const highLightLyric = ref<number>(0);
+const highLightLryicHeight = ref<number>(0);
+const lyrics = reactive<Lyric[]>([]);
+const lryicItem = ref<HTMLElement[]>();
+
+const lryStyle = reactive<CSSProperties>({
+  transform: `translateY(calc(35vh - ${highLightLryicHeight.value}px))`,
+});
+
+//歌词计数器
 function setLyricInterval() {
   clearInterval(interval);
   interval = setInterval(() => {
-    lyrics.forEach((item, index) => {
-      const nextLyric = lyrics[index + 1];
-      if (
-        curTime.value >= item.time &&
-        (nextLyric ? curTime.value < nextLyric.time : true)
-      ) {
-        console.log(item.time, curTime.value);
-      }
-    });
-    console.log(highLightLyric.value);
-  }, 1000);
+    try {
+      const ct = curTime.value;
+      lyrics.forEach((item, index) => {
+        if (item.time < ct && lyrics[index + 1].time > ct) {
+          if (index != highLightLyric.value) {
+            const h =
+              lryicItem.value![index - 1].getBoundingClientRect().height;
+            highLightLryicHeight.value += 50 * getHeight(h);
+          }
+          highLightLyric.value = index;
+          throw new Error("over");
+        }
+      });
+    } catch (e) {}
+  }, 200);
 }
+
+//获取当前歌词进度
 const curTime = computed<number>(() => {
   return musicStore.songPassed * musicStore.curSong?.duration!;
 });
+
+function getHeight(h: number): number {
+  console.log(h);
+  return h <= 10
+    ? 0
+    : h <= 60
+    ? 1
+    : h <= 120
+    ? 2
+    : h <= 180
+    ? 3
+    : h <= 240
+    ? 4
+    : h <= 300
+    ? 5
+    : h <= 360
+    ? 6
+    : h <= 420
+    ? 7
+    : h <= 480
+    ? 8
+    : 9;
+}
+
+watch(
+  () => highLightLyric.value,
+  (nv: any, ov: any) => {
+    lryStyle.transform = `translateY(calc(35vh - ${highLightLryicHeight.value}px))`;
+  }
+);
+
+watch(
+  () => musicStore.curSong?.id,
+  (nv: any, ov: any) => {
+    highLightLryicHeight.value = 0;
+    highLightLyric.value = 0;
+    lyrics.splice(0, lyrics.length);
+    Array.prototype.push.apply(lyrics, musicStore.lyric);
+  },
+  {
+    immediate: true,
+  }
+);
 watch(
   () => musicStore.player.play,
   (nv: any, ov: any) => {
@@ -118,20 +178,24 @@ watch(
     margin: 10px 0;
   }
 }
-.lyrics {
+.lryic-wrapper {
+  height: 80%;
+  overflow-y: hidden;
   flex: 1;
   z-index: 110;
-  height: 80%;
-  overflow-y: scroll;
-  .lyric {
-    text-align: center;
-    line-height: 40px;
-    font-size: 24px;
-    margin: 10px 0;
-    transition: all 0.1s ease;
-    &.active,
-    &:hover {
-      font-size: 28px;
+  .lyrics {
+    transition: all 0.3s ease;
+    .lyric {
+      text-align: center;
+      line-height: 40px;
+      font-size: 22px;
+      margin: 10px 0;
+      transition: all 0.1s ease;
+      color: rgba($color: #000000, $alpha: 0.4);
+      &.active,
+      &:hover {
+        color: rgba($color: #000000, $alpha: 1);
+      }
     }
   }
 }
