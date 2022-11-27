@@ -4,13 +4,15 @@
       ref="process"
       class="process"
       :class="processDraging ? 'active' : ''"
-      @mouseup.stop="processMouseDown"
+      @mouseup="processMouseDown"
+      @click.stop=""
     >
       <div class="passed" :style="passedStyle"></div>
       <div
         class="dragger"
         :style="draggerStyle"
         @mousedown.stop="processDragStart"
+        @click.stop=""
       ></div>
     </div>
     <div class="content">

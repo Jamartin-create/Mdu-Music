@@ -14,15 +14,19 @@ export interface SysState {
     }
 }
 
+export type Lyric = {
+    time: number,
+    lyric: string,
+    active: boolean
+}
+
 export interface MusicState {
     curSong: SongInfo | null;
     curSongIdx: number;
     curPlayList: any[];
     curPlayListId: number | null;
-    lyric: {
-        timeLine: number[],
-        lyrics: string[],
-    };
+    curLyric: number,
+    lyric: Lyric[];
     songLevel: MusicLevelType;
     player: {
         play: boolean;

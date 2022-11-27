@@ -78,9 +78,7 @@ function useToPage(banner: any) {
 
 setBannerInterval();
 
-onMounted(() => {
-  console.log(props);
-});
+onMounted(() => {});
 
 onUnmounted(() => {
   clearInterval(bannerInterval);

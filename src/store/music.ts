@@ -14,10 +14,8 @@ export const MusicStore = defineStore({
         curPlayList: [],
         curPlayListId: null,
         songLevel: 'standard',
-        lyric: {
-            timeLine: [],
-            lyrics: [],
-        },
+        curLyric: 0,
+        lyric: [],
         player: {
             play: false,
             circleMode: 'LISTCIRCLE',
@@ -83,11 +81,11 @@ export const MusicStore = defineStore({
             try {
                 const res: any = await fetchMusicLryic(musicId);
                 const data = parseLryic(res.lrc.lyric);
-                this.lyric.timeLine = data.timeLine
-                this.lyric.lyrics = data.lyric
-            } catch (error) {
-
-            }
+                this.lyric = data
+            } catch (error) { }
+        },
+        changeCurLyric(idx: number, type: boolean) {
+            this.lyric[idx].active = type
         },
         changePlayList(playList: any[], playListId: number, curSongIdx: number) {
             this.curPlayList = playList;
