@@ -78,6 +78,7 @@ function checkQrStatus() {
       clearInterval(interval);
       userStore.userLogin(cookie);
       await userStore.fetchUserAccount();
+      await userStore.fetchUserPlayList();
       router.push({ name: "library" });
     }
   }, 1000);
@@ -94,7 +95,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .container {
-  height: 80vh;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: center;

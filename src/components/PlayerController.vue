@@ -146,7 +146,7 @@ watch(
 $primaryColor: var(--primary-color);
 $secondaryColor: var(--second-color);
 footer {
-  position: sticky;
+  position: fixed;
   bottom: 0;
   height: 115px;
   width: 100%;

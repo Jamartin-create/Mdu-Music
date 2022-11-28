@@ -7,10 +7,11 @@ import { MusicStore } from "./store/music";
 import { UserStore } from "./store/user";
 import { RouterView } from "vue-router";
 import { ref, watch } from "vue";
+import { isLogin } from "./utils/auth";
 const musicStore = MusicStore();
 musicStore.player.play = false;
+const userStore = UserStore();
 const loadBasicData = async () => {
-  const userStore = UserStore();
   await userStore.fetchUserAccount();
   await userStore.fetchUserPlayList();
 };
@@ -24,6 +25,14 @@ function unShowLryicsPage() {
   window.document.getElementsByTagName("body")[0].classList.remove("no-scroll");
 }
 loadBasicData();
+
+const loginStatus = ref<boolean>(isLogin());
+watch(
+  () => userStore.loginMode,
+  (nv, ov) => {
+    loginStatus.value = isLogin();
+  }
+);
 </script>
 
 <template>
@@ -38,7 +47,7 @@ loadBasicData();
     </RouterView>
   </main>
   <Teleport to="body">
-    <PlayerController @toggle-lryics="showLryicsPage" />
+    <PlayerController v-if="loginStatus" @toggle-lryics="showLryicsPage" />
   </Teleport>
 </template>
 
