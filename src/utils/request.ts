@@ -72,7 +72,6 @@ function responseInceptorsError(error: any) {
 }
 
 const createAxiosInstance = (config?: AxiosRequestConfig): AxiosInstance => {
-    console.log(import.meta)
     //基础配置
     const instance = axios.create({
         baseURL: import.meta.env.VITE_RES_URL,
