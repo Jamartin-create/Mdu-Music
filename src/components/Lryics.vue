@@ -10,7 +10,14 @@
         :is-hover-blur="false"
       />
       <div class="title">{{ musicStore.curSong?.name }}</div>
-      <div class="ctl-btn"></div>
+      <div class="ctl-btn">
+        <ProcessBar
+          :percentage="musicProcess"
+          :background-color="'rgba(0,0,0,0.4)'"
+          :width="'400px'"
+          @change-position="processPositionChange"
+        />
+      </div>
     </div>
     <div class="lryic-wrapper">
       <div class="lyrics" :style="lryStyle">
@@ -32,9 +39,11 @@
 
 <script setup lang="ts">
 import BgPic from "./BgPic.vue";
+import ProcessBar from "./ProcessBar.vue";
 import { MusicStore } from "../store/music";
 import { Lyric } from "../store/interface";
 import { computed, reactive, watch, ref, CSSProperties } from "vue";
+import useProcessWatch from "../hooks/playerController";
 const musicStore = MusicStore();
 const emits = defineEmits(["un-show"]);
 const props = defineProps<{
@@ -43,6 +52,7 @@ const props = defineProps<{
 let interval: any = null;
 const highLightLyric = ref<number>(0);
 const highLightLryicHeight = ref<number>(0);
+const { musicProcess, processPositionChange } = useProcessWatch(musicStore);
 const lyrics = reactive<Lyric[]>([]);
 const lryicItem = ref<HTMLElement[]>();
 
@@ -76,8 +86,8 @@ const curTime = computed<number>(() => {
   return musicStore.songPassed * musicStore.curSong?.duration!;
 });
 
+//获取歌词的行高
 function getHeight(h: number): number {
-  console.log(h);
   return h <= 10
     ? 0
     : h <= 60
@@ -155,6 +165,7 @@ watch(
   left: 0;
   height: 100%;
   width: 100%;
+  min-width: 800px;
   transform: translateY(100%);
   transition: all 1s ease;
   background-color: #fff;
@@ -169,6 +180,7 @@ watch(
 .controller {
   flex: 1;
   height: 100%;
+  width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;

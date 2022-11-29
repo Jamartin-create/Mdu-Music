@@ -1,38 +1,39 @@
 <template>
-  <audio ref="player" :src="curMusicUrl" />
+  <audio
+    ref="player"
+    @ended="musicEnded"
+    @timeupdate="handleTimeUpdate"
+    :src="curMusicUrl"
+  />
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, onUnmounted, ref, watch } from "vue";
+import { nextTick, ref, watch } from "vue";
 import { MusicStore } from "../store/music";
 const musicStore = MusicStore();
 const player = ref<HTMLAudioElement>();
 const curMusicUrl = ref<string>();
-let musicDtInterval: any = null;
 curMusicUrl.value = musicStore.curSong?.url;
 
-function setMusicDtInterval() {
-  clearMusicDtInterval();
-  musicDtInterval = setInterval(() => {
-    const curDur = player.value!.currentTime!;
-    const dur = player.value?.duration!;
-    musicStore.changeDuration(curDur / dur);
-  }, 100);
-}
-
-function clearMusicDtInterval() {
-  clearInterval(musicDtInterval);
+function handleTimeUpdate(e: Event) {
+  const audio = e.target as HTMLAudioElement;
+  musicStore.changeDuration(audio.currentTime / audio.duration);
 }
 
 function changeCurrentTime(duration: number) {
-  clearMusicDtInterval();
   player.value!.currentTime = duration * player.value?.duration!;
-  setMusicDtInterval();
 }
 
 function musicEnded() {
   musicStore.next();
 }
+
+watch(
+  () => musicStore.curSongPassChangeValue,
+  (nv: any, ov: any) => {
+    player.value!.currentTime = nv * player.value?.duration!;
+  }
+);
 
 watch(
   () => player.value?.paused,
@@ -66,16 +67,6 @@ watch(
     deep: true,
   }
 );
-onMounted(() => {
-  player.value!.onended = () => {
-    musicEnded();
-  };
-});
-
-if (musicStore.curSong != null) setMusicDtInterval();
-onUnmounted(() => {
-  clearMusicDtInterval();
-});
 defineExpose({
   changeCurrentTime,
 });

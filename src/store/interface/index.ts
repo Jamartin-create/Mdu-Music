@@ -26,6 +26,7 @@ export interface MusicState {
     curPlayList: any[];
     curPlayListId: number | null;
     curLyric: number,
+    curSongPassChangeValue: number,
     lyric: Lyric[];
     songLevel: MusicLevelType;
     player: {

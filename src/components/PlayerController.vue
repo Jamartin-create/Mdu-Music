@@ -1,20 +1,9 @@
 <template>
   <footer @click="openLryics">
-    <div
-      ref="process"
-      class="process"
-      :class="processDraging ? 'active' : ''"
-      @mouseup.stop="processMouseDown"
-      @click.stop=""
-    >
-      <div class="passed" :style="passedStyle"></div>
-      <div
-        class="dragger"
-        :style="draggerStyle"
-        @mousedown.stop="processDragStart"
-        @click.stop=""
-      ></div>
-    </div>
+    <ProcessBar
+      :percentage="musicProcess"
+      @change-position="processPositionChange"
+    />
     <div class="content">
       <div class="song-info">
         <BgPic
@@ -63,14 +52,13 @@
 import BgPic from "./BgPic.vue";
 import Player from "./Player.vue";
 import { MusicStore } from "../store/music";
-import { CSSProperties, reactive, ref, watch } from "vue";
+import { ref } from "vue";
+import useProcessWatch from "../hooks/playerController";
+import ProcessBar from "./ProcessBar.vue";
 const musicStore = MusicStore();
-const process = ref<HTMLElement>();
 const musicPlayer = ref<InstanceType<typeof Player>>();
-const processDraging = ref<boolean>();
+const { musicProcess, processPositionChange } = useProcessWatch(musicStore);
 const emits = defineEmits(["toggle-lryics"]);
-window.onmousemove = dragMove;
-window.onmouseup = dragEnd;
 
 function openLryics() {
   emits("toggle-lryics");
@@ -83,63 +71,10 @@ function prev() {
   musicStore.prev();
 }
 
-function processDragStart() {
-  processDraging.value = true;
-}
-
-function dragMove(e: MouseEvent) {
-  if (!processDraging.value) return;
-  if (processDraging.value) changeProcess(computedProcess(e.clientX));
-}
-
-function dragEnd(e: MouseEvent) {
-  //调整音乐进度
-  if (processDraging.value)
-    musicPlayer.value?.changeCurrentTime(computedProcess(e.clientX));
-  processDraging.value = false;
-}
-
-//点击进度条控制进度
-function processMouseDown(e: MouseEvent) {
-  musicPlayer.value?.changeCurrentTime(computedProcess(e.clientX));
-}
-
-//获取dragger位置百分比
-function computedProcess(clientWidth: number) {
-  //减10是右侧的scrollbar
-  const maxWidth: number = process.value?.getBoundingClientRect().width! - 10;
-  if (clientWidth < 0) return 0;
-  else if (clientWidth >= maxWidth) return 1;
-  else return clientWidth / maxWidth;
-}
-
 function togglePlayPause() {
   if (musicStore.playing) musicStore.pause();
   else musicStore.play();
 }
-
-const draggerStyle = reactive<CSSProperties>({
-  left: "0%",
-});
-const passedStyle = reactive<CSSProperties>({
-  width: "0%",
-});
-
-function changeProcess(duration: number) {
-  draggerStyle.left = duration * 100 + "%";
-  passedStyle.width = duration * 100 + "%";
-}
-
-watch(
-  () => musicStore.curSong?.passDuration,
-  (nv: any, ov: any) => {
-    if (processDraging.value) return;
-    changeProcess(nv);
-  },
-  {
-    immediate: true,
-  }
-);
 </script>
 
 <style scoped lang="scss">
@@ -150,6 +85,7 @@ footer {
   bottom: 0;
   height: 115px;
   width: 100%;
+  min-width: 900px;
   background-color: $primaryColor;
   background: hsla(0, 0%, 100%, 0.3);
   backdrop-filter: blur(20px);
@@ -158,34 +94,6 @@ footer {
   justify-content: center;
   .process {
     position: absolute;
-    width: 100%;
-    height: 10px;
-    background-color: transparent;
-    .dragger {
-      position: absolute;
-      height: 12px;
-      width: 12px;
-      background-color: rgba($color: #fff, $alpha: 1);
-      box-shadow: 0 1px 10px rgba($color: #000000, $alpha: 0.3);
-      transform: translate(-50%, calc(-50% - 5px));
-      border-radius: 50%;
-      opacity: 0;
-    }
-    &.active,
-    &:hover {
-      .passed {
-        height: 6px;
-        transform: translateY(-2px);
-      }
-      .dragger {
-        opacity: 1;
-      }
-    }
-    .passed {
-      height: 4px;
-      border-radius: 3px;
-      background-color: rgba(#000000, 0.3);
-    }
   }
   .content {
     width: 80%;
@@ -199,8 +107,12 @@ footer {
       .other-info {
         margin-left: 10px;
         .title {
+          max-width: 200px;
           font-size: 20px;
           font-weight: bold;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
         }
         .artists {
           color: rgba($color: #000000, $alpha: 0.6);

@@ -1,10 +1,9 @@
-import { defineStore } from 'pinia'
+import { defineStore, StoreDefinition } from 'pinia'
 import { CircleMode, MusicState, SongInfo } from './interface'
 import { fetchMusicUrl, fetchMusicDetail, checkMusicUseful, fetchMusicLryic } from '../api/music'
 import piniaPersistConfig from '../config/piniaPersist'
 import { SysStore } from './sys'
 import { parseLryic } from '../utils/lryics'
-
 
 export const MusicStore = defineStore({
     id: "MusicStore",
@@ -13,6 +12,7 @@ export const MusicStore = defineStore({
         curSongIdx: 0,
         curPlayList: [],
         curPlayListId: null,
+        curSongPassChangeValue: 0, //每次改变歌曲进度，通过该节点修改
         songLevel: 'standard',
         curLyric: 0,
         lyric: [],

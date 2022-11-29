@@ -5,5 +5,5 @@ interface ImportMetaEnv {
 }
 
 interface ImportMeta {
-    readonly en: ImportMetaEnv
+    readonly env: ImportMetaEnv
 }
