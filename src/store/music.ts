@@ -1,4 +1,4 @@
-import { defineStore, StoreDefinition } from 'pinia'
+import { defineStore } from 'pinia'
 import { CircleMode, MusicState, SongInfo } from './interface'
 import { fetchMusicUrl, fetchMusicDetail, checkMusicUseful, fetchMusicLryic } from '../api/music'
 import piniaPersistConfig from '../config/piniaPersist'

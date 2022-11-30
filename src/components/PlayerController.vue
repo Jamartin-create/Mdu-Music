@@ -21,20 +21,7 @@
           </div>
         </div>
       </div>
-      <div class="controller">
-        <button @click.stop="prevMusic">
-          <i class="fas fa-step-backward"></i>
-        </button>
-        <button class="center" @click.stop="tooglePlayPause">
-          <i
-            class="fas"
-            :class="musicStore.player.play ? ' fa-pause' : 'fa-play'"
-          ></i>
-        </button>
-        <button @click.stop="nextMusic">
-          <i class="fas fa-step-forward"></i>
-        </button>
-      </div>
+      <ControllerBar :width="'30%'" />
       <div class="controller other-ctrl">
         <button>
           <i class="fas fa-volume-down"></i>
@@ -49,21 +36,16 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import BgPic from "./BgPic.vue";
 import Player from "./Player.vue";
-import { MusicStore } from "../store/music";
-import { ref } from "vue";
-import useProcessWatch from "../hooks/playerController";
 import ProcessBar from "./ProcessBar.vue";
+import ControllerBar from "./PlayerController/ControllerBar.vue";
+import { MusicStore } from "../store/music";
+import useProcessWatch from "../hooks/playerController";
 const musicStore = MusicStore();
 const musicPlayer = ref<InstanceType<typeof Player>>();
-const {
-  musicProcess,
-  nextMusic,
-  prevMusic,
-  tooglePlayPause,
-  processPositionChange,
-} = useProcessWatch(musicStore);
+const { musicProcess, processPositionChange } = useProcessWatch(musicStore);
 
 const emits = defineEmits(["toggle-lryics"]);
 function openLryics() {

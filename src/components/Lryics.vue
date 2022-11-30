@@ -14,9 +14,10 @@
         <ProcessBar
           :percentage="musicProcess"
           :background-color="'rgba(0,0,0,0.4)'"
-          :width="'400px'"
+          :width="'300px'"
           @change-position="processPositionChange"
         />
+        <ControllerBar />
       </div>
     </div>
     <div class="lryic-wrapper">
@@ -40,6 +41,7 @@
 <script setup lang="ts">
 import BgPic from "./BgPic.vue";
 import ProcessBar from "./ProcessBar.vue";
+import ControllerBar from "./PlayerController/ControllerBar.vue";
 import { MusicStore } from "../store/music";
 import { Lyric } from "../store/interface";
 import { computed, reactive, watch, ref, CSSProperties } from "vue";
@@ -52,7 +54,13 @@ const props = defineProps<{
 let interval: any = null;
 const highLightLyric = ref<number>(0);
 const highLightLryicHeight = ref<number>(0);
-const { musicProcess, processPositionChange } = useProcessWatch(musicStore);
+const {
+  musicProcess,
+  processPositionChange,
+  prevMusic,
+  nextMusic,
+  tooglePlayPause,
+} = useProcessWatch(musicStore);
 const lyrics = reactive<Lyric[]>([]);
 const lryicItem = ref<HTMLElement[]>();
 
@@ -186,6 +194,13 @@ watch(
   justify-content: center;
   align-items: center;
   font-size: 22px;
+  .ctl-btn {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
   > * {
     margin: 10px 0;
   }
