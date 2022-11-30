@@ -22,16 +22,16 @@
         </div>
       </div>
       <div class="controller">
-        <button @click.stop="prev">
+        <button @click.stop="prevMusic">
           <i class="fas fa-step-backward"></i>
         </button>
-        <button class="center" @click.stop="togglePlayPause">
+        <button class="center" @click.stop="tooglePlayPause">
           <i
             class="fas"
             :class="musicStore.player.play ? ' fa-pause' : 'fa-play'"
           ></i>
         </button>
-        <button @click.stop="next">
+        <button @click.stop="nextMusic">
           <i class="fas fa-step-forward"></i>
         </button>
       </div>
@@ -57,23 +57,17 @@ import useProcessWatch from "../hooks/playerController";
 import ProcessBar from "./ProcessBar.vue";
 const musicStore = MusicStore();
 const musicPlayer = ref<InstanceType<typeof Player>>();
-const { musicProcess, processPositionChange } = useProcessWatch(musicStore);
-const emits = defineEmits(["toggle-lryics"]);
+const {
+  musicProcess,
+  nextMusic,
+  prevMusic,
+  tooglePlayPause,
+  processPositionChange,
+} = useProcessWatch(musicStore);
 
+const emits = defineEmits(["toggle-lryics"]);
 function openLryics() {
   emits("toggle-lryics");
-}
-
-function next() {
-  musicStore.next();
-}
-function prev() {
-  musicStore.prev();
-}
-
-function togglePlayPause() {
-  if (musicStore.playing) musicStore.pause();
-  else musicStore.play();
 }
 </script>
 
