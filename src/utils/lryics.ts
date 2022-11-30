@@ -5,7 +5,7 @@ export const parseLryic = (lryics: string) => {
         const sp = item.split(']')
         res.push({
             time: timeTranslate(sp[0].slice(1, sp[0].length)),
-            lyric: sp[1],
+            lyric: typeof sp[1] == "string" ? sp[1] : '',
             active: index === 0 ? true : false
         })
     })

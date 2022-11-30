@@ -54,13 +54,7 @@ const props = defineProps<{
 let interval: any = null;
 const highLightLyric = ref<number>(0);
 const highLightLryicHeight = ref<number>(0);
-const {
-  musicProcess,
-  processPositionChange,
-  prevMusic,
-  nextMusic,
-  tooglePlayPause,
-} = useProcessWatch(musicStore);
+const { musicProcess, processPositionChange } = useProcessWatch(musicStore);
 const lyrics = reactive<Lyric[]>([]);
 const lryicItem = ref<HTMLElement[]>();
 
@@ -74,19 +68,19 @@ function setLyricInterval() {
   interval = setInterval(() => {
     try {
       const ct = curTime.value;
+      let centerHight = 0;
       lyrics.forEach((item, index) => {
+        centerHight += getHeight(
+          lryicItem.value![index].getBoundingClientRect().height
+        );
         if (item.time < ct && lyrics[index + 1].time > ct) {
-          if (index != highLightLyric.value) {
-            const h =
-              lryicItem.value![index - 1].getBoundingClientRect().height;
-            highLightLryicHeight.value += 50 * getHeight(h);
-          }
+          highLightLryicHeight.value = 50 * centerHight;
           highLightLyric.value = index;
           throw new Error("over");
         }
       });
     } catch (e) {}
-  }, 200);
+  }, 100);
 }
 
 //获取当前歌词进度
