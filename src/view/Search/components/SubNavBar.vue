@@ -29,6 +29,7 @@ const navList = reactive<
   { id: 1000, label: "歌单", active: false },
   { id: 1002, label: "用户", active: false },
 ]);
+//改变搜索类型
 function onChange(id: SearchType) {
   emits("change", id);
   navList.forEach((item) => {

@@ -7,7 +7,6 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick } from "vue";
 import { MusicStore } from "../store/music";
 const emit = defineEmits(["chose-music"]);
 const props = defineProps<{

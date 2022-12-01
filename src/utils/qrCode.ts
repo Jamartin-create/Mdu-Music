@@ -11,6 +11,12 @@ export interface QROption {
     type: string;
 }
 
+/**
+ * @description 根据unikey生成二维码
+ * @param unikey 
+ * @param option 
+ * @returns 
+ */
 export async function generatorQrCode(unikey: string, option: QROption): Promise<string> {
     try {
         console.log(unikey)

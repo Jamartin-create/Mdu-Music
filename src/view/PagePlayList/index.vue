@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 import { computed } from "@vue/reactivity";
-import { watch, reactive, ref, onBeforeUnmount } from "vue";
+import { watch, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
 import { PlayListPageParams } from "../../api/interface/music";
 import { fetchPlayListSongs, fetchPlayListDetails } from "../../api/music";
@@ -114,7 +114,7 @@ function loadMore() {
 
 watch(
   () => searchPage,
-  (nv: any, ov: any) => {
+  () => {
     fetchAllSong();
   },
   { deep: true }

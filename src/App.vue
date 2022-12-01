@@ -3,6 +3,7 @@ import PlayerController from "./components/PlayerController.vue";
 import SiteNav from "./components/SiteNavigition.vue";
 import Lryics from "./components/Lryics.vue";
 import Toast from "./components/Toast.vue";
+import Player from "./components/Player.vue";
 import { MusicStore } from "./store/music";
 import { UserStore } from "./store/user";
 import { RouterView } from "vue-router";
@@ -33,6 +34,7 @@ watch(
     loginStatus.value = isLogin();
   }
 );
+const musicPlayer = ref<InstanceType<typeof Player>>();
 </script>
 
 <template>
@@ -49,6 +51,7 @@ watch(
   <Teleport to="body">
     <PlayerController v-if="loginStatus" @toggle-lryics="showLryicsPage" />
   </Teleport>
+  <Player ref="musicPlayer" />
 </template>
 
 <style lang="scss">

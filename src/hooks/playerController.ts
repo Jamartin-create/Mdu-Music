@@ -1,5 +1,4 @@
 import { ref, watch } from "vue";
-import { MusicStore } from "../store/music";
 
 /**
  * @description 控制歌曲播放进度

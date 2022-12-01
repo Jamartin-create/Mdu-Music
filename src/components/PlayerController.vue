@@ -1,5 +1,5 @@
 <template>
-  <footer @click="openLryics">
+  <footer @mousedown.self="openLryics">
     <ProcessBar
       :percentage="musicProcess"
       @change-position="processPositionChange"
@@ -32,19 +32,15 @@
       </div>
     </div>
   </footer>
-  <Player ref="musicPlayer" />
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import BgPic from "./BgPic.vue";
-import Player from "./Player.vue";
 import ProcessBar from "./ProcessBar.vue";
 import ControllerBar from "./PlayerController/ControllerBar.vue";
 import { MusicStore } from "../store/music";
 import useProcessWatch from "../hooks/playerController";
 const musicStore = MusicStore();
-const musicPlayer = ref<InstanceType<typeof Player>>();
 const { musicProcess, processPositionChange } = useProcessWatch(musicStore);
 
 const emits = defineEmits(["toggle-lryics"]);

@@ -22,7 +22,7 @@ import SingerList from "../../components/SingerList.vue";
 import PlayMusicList from "../../components/PlayMusicList.vue";
 import UserList from "../../components/UserList.vue";
 import SubNavBar from "./components/SubNavBar.vue";
-import { computed, markRaw, onMounted, reactive, ref, watch } from "vue";
+import { markRaw, onMounted, reactive, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { searchByKeyWords } from "../../api/music";
 import { MusicKeyWordsParam, SearchType } from "../../api/interface/music";
@@ -33,46 +33,32 @@ type Component = {
 
 const route = useRoute();
 const router = useRouter();
-
+//子组件
 const tabComponents = reactive<Component[]>([
-  {
-    id: 1,
-    component: markRaw(MusicList),
-  },
-  {
-    id: 10,
-    component: markRaw(AlbumList),
-  },
-  {
-    id: 100,
-    component: markRaw(SingerList),
-  },
-  {
-    id: 1000,
-    component: markRaw(PlayMusicList),
-  },
-  {
-    id: 1002,
-    component: markRaw(UserList),
-  },
+  { id: 1, component: markRaw(MusicList) },
+  { id: 10, component: markRaw(AlbumList) },
+  { id: 100, component: markRaw(SingerList) },
+  { id: 1000, component: markRaw(PlayMusicList) },
+  { id: 1002, component: markRaw(UserList) },
 ]);
+//分页查询参数
 const searchPage = reactive<MusicKeyWordsParam>({
   limit: 50,
   offset: 0,
   keywords: "",
   type: 1,
 });
+const searchLoading = ref<boolean>(false); //搜索状态
+const noMore = ref<boolean>(false); //是否还有更多
+const list = reactive<any[]>([]); //列表
+const curSelect = ref<number>(0); //当前选中的tab
 
-const searchLoading = ref<boolean>(false);
-const noMore = ref<boolean>(false);
-const list = reactive<any[]>([]);
-const curSelect = ref<number>(0);
-
+//加载更多
 function loadMore() {
   if (noMore.value) return;
   searchPage.offset!++;
 }
-
+//切换page
 function changeType(type: SearchType) {
   if (type === tabComponents[curSelect.value].id) return;
   tabComponents.forEach((item, index) => {
@@ -82,7 +68,7 @@ function changeType(type: SearchType) {
   searchPage.offset = 0;
   searchPage.type = type;
 }
-
+//搜索接口
 async function searchMusic() {
   searchLoading.value = true;
   try {
@@ -98,7 +84,7 @@ async function searchMusic() {
     searchLoading.value = false;
   }
 }
-
+//更新列表
 function updatePlayList(lists: any, type: SearchType) {
   Array.prototype.push.apply(
     list,
@@ -115,7 +101,7 @@ function updatePlayList(lists: any, type: SearchType) {
       : []
   );
 }
-
+//更新列表长度
 function checkListLength(lists: any, type: SearchType) {
   const count =
     type == 1
@@ -131,7 +117,6 @@ function checkListLength(lists: any, type: SearchType) {
       : [];
   noMore.value = list.length >= count;
 }
-
 //监听路由变化
 watch(
   () => router.currentRoute.value.query,
@@ -143,13 +128,10 @@ watch(
   },
   { immediate: true }
 );
-
+//当分页查询条件其中之一发生变化则重新请求界面
 watch(
   () => searchPage,
-  (
-    newVal: MusicKeyWordsParam | undefined,
-    oldVal: MusicKeyWordsParam | undefined
-  ) => {
+  () => {
     searchMusic();
   },
   { deep: true, immediate: true }

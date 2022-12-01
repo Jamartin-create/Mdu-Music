@@ -14,7 +14,6 @@ nprogress.configure({ showSpinner: false, minimum: 0.2, easeing: 'swing', speed:
  */
 function requestInceptorsSuccess(config: AxiosRequestConfig) {
     config.headers?.isLoading == false || config.headers?.isLoading == null && nprogress.start();
-    // console.log("请求成功config:", config)
     const params = config.params ? config.params : {}
     config.params = {
         ...params,
@@ -31,7 +30,6 @@ function requestInceptorsSuccess(config: AxiosRequestConfig) {
  */
 function requestInceptorsError(error: any) {
     nprogress.done();
-    // console.log("请求失败:", error)
     return Promise.reject(error.message)
 }
 
@@ -42,7 +40,6 @@ function requestInceptorsError(error: any) {
  */
 function responseInceptorsSuccess(response: any) {
     nprogress.done();
-    // console.log("响应response：", response);
     return response.data
 }
 
@@ -55,11 +52,10 @@ function responseInceptorsError(error: any) {
     const router = useRouter();
     const sysStore = SysStore();
     nprogress.done();
-    console.log(error);
+    console.error(error);
     if (error.code === "ERR_NETWORK") {
         sysStore.showSeconds(3000, "网络异常，请检查网络后重试");
     }
-    // console.log("响应失败", error);
     if (
         error.response &&
         typeof error.response.data === 'object' &&

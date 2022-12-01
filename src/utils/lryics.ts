@@ -1,4 +1,10 @@
 import { Lyric } from "../store/interface"
+
+/**
+ * @description 解析歌词
+ * @param lryics 
+ * @returns 
+ */
 export const parseLryic = (lryics: string) => {
     const res: Lyric[] = []
     lryics.split('\n').forEach((item, index) => {
@@ -12,6 +18,11 @@ export const parseLryic = (lryics: string) => {
     return res
 }
 
+/**
+ * @description 歌词时间节点的时间转换为毫秒级别
+ * @param time 
+ * @returns 
+ */
 function timeTranslate(time: string): number {
     const tr: string[] = time.split('.');
     const min: number = parseInt(tr[0].split(':')[0]);
