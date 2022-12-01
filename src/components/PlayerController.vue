@@ -39,9 +39,9 @@ import BgPic from "./BgPic.vue";
 import ProcessBar from "./ProcessBar.vue";
 import ControllerBar from "./PlayerController/ControllerBar.vue";
 import { MusicStore } from "../store/music";
-import useProcessWatch from "../hooks/playerController";
+import { useMusicController } from "../hooks/useMusicControl";
 const musicStore = MusicStore();
-const { musicProcess, processPositionChange } = useProcessWatch(musicStore);
+const { musicProcess, processPositionChange } = useMusicController();
 
 const emits = defineEmits(["toggle-lryics"]);
 function openLryics() {

@@ -44,8 +44,8 @@ import ProcessBar from "./ProcessBar.vue";
 import ControllerBar from "./PlayerController/ControllerBar.vue";
 import { MusicStore } from "../store/music";
 import { Lyric } from "../store/interface";
-import { computed, reactive, watch, ref, CSSProperties } from "vue";
-import useProcessWatch from "../hooks/playerController";
+import { reactive, watch, ref, CSSProperties } from "vue";
+import { useMusicController, useMusicListener } from "../hooks/useMusicControl";
 const musicStore = MusicStore();
 const emits = defineEmits(["un-show"]);
 const props = defineProps<{
@@ -54,7 +54,9 @@ const props = defineProps<{
 let interval: any = null;
 const highLightLyric = ref<number>(0);
 const highLightLryicHeight = ref<number>(0);
-const { musicProcess, processPositionChange } = useProcessWatch(musicStore);
+const { watchMusicChange, watchPlayingStatus } = useMusicListener();
+const { curProcess, musicProcess, processPositionChange } =
+  useMusicController();
 const lyrics = reactive<Lyric[]>([]);
 const lryicItem = ref<HTMLElement[]>();
 
@@ -67,7 +69,7 @@ function setLyricInterval() {
   clearInterval(interval);
   interval = setInterval(() => {
     try {
-      const ct = curTime.value;
+      const ct = curProcess.value;
       let centerHight = 0;
       lyrics.forEach((item, index) => {
         centerHight += getHeight(
@@ -82,11 +84,6 @@ function setLyricInterval() {
     } catch (e) {}
   }, 100);
 }
-
-//获取当前歌词进度
-const curTime = computed<number>(() => {
-  return musicStore.songPassed * musicStore.curSong?.duration!;
-});
 
 //获取歌词的行高
 function getHeight(h: number): number {
@@ -118,20 +115,16 @@ watch(
   }
 );
 
-watch(
-  () => musicStore.curSong?.id,
+watchMusicChange(
   (nv: any, ov: any) => {
     highLightLryicHeight.value = 0;
     highLightLyric.value = 0;
     lyrics.splice(0, lyrics.length);
     Array.prototype.push.apply(lyrics, musicStore.lyric);
   },
-  {
-    immediate: true,
-  }
+  { immediate: true }
 );
-watch(
-  () => musicStore.player.play,
+watchPlayingStatus(
   (nv: any, ov: any) => {
     if (nv) setLyricInterval();
     else clearInterval(interval);

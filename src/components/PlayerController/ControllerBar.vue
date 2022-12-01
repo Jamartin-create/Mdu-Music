@@ -16,10 +16,10 @@
 </template>
 
 <script setup lang="ts">
-import useProcessWatch from "../../hooks/playerController";
+import { useMusicController } from "../../hooks/useMusicControl";
 import { MusicStore } from "../../store/music";
 const musicStore = MusicStore();
-const { prevMusic, nextMusic, tooglePlayPause } = useProcessWatch(musicStore);
+const { prevMusic, nextMusic, tooglePlayPause } = useMusicController();
 
 const props = withDefaults(defineProps<{ width?: string }>(), {
   width: "100%",
