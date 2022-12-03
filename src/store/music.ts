@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
+import { isLogin } from '../utils/auth'
+import { parseLryic } from '../utils/lryics'
+import piniaPersistConfig from '../config/piniaPersist'
+import { useSystemTools } from '../hooks/useSystemTools'
 import { CircleMode, MusicState, SongInfo } from './interface'
 import { fetchMusicUrl, fetchMusicDetail, checkMusicUseful, fetchMusicLryic } from '../api/music'
-import piniaPersistConfig from '../config/piniaPersist'
-import { SysStore } from './sys'
-import { parseLryic } from '../utils/lryics'
 
 export const MusicStore = defineStore({
     id: "MusicStore",
@@ -35,14 +36,15 @@ export const MusicStore = defineStore({
     },
     actions: {
         async changeMusic(musicId: number) {
-            const sysStore = SysStore();
             try {
+                const { showMessage } = useSystemTools()
                 if (musicId == this.curSong?.id) return;
                 this.fetchMusicLryic(musicId)
                 const detailRes: any = await fetchMusicDetail(musicId)
                 const isUse: any = await checkMusicUseful(musicId);
                 if (!isUse.success) {
-                    sysStore.showSeconds(3000, `歌曲 '${detailRes.songs[0].name}' 暂无版权`)
+                    if (!isLogin()) showMessage('需要登陆才可以听哦')
+                    else showMessage(`歌曲 '${detailRes.songs[0].name}' 暂无版权`)
                     return false;
                 }
                 const urlRes: any = await fetchMusicUrl({
@@ -50,7 +52,7 @@ export const MusicStore = defineStore({
                     level: this.songLevel
                 });
                 if (detailRes.code != 200 || detailRes.code != 200) {
-                    sysStore.showSeconds(3000, "获取音乐信息异常")
+                    showMessage("获取音乐信息异常")
                     return false;
                 }
                 const { songs } = detailRes;
@@ -77,6 +79,7 @@ export const MusicStore = defineStore({
                 console.error(error)
             }
         },
+        //获取歌词
         async fetchMusicLryic(musicId: number) {
             try {
                 const res: any = await fetchMusicLryic(musicId);

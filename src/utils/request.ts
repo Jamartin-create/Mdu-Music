@@ -1,8 +1,8 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
-import { useRouter } from 'vue-router'
 import nprogress from 'nprogress'
 import { getCookie } from './auth'
-import { SysStore } from '../store/sys'
+import { useRouter } from 'vue-router'
+import { useSystemTools } from '../hooks/useSystemTools'
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 
 //配置进度条参数
 nprogress.configure({ showSpinner: false, minimum: 0.2, easeing: 'swing', speed: 1000, trickleRate: 0.2 });
@@ -49,19 +49,19 @@ function responseInceptorsSuccess(response: any) {
  * @returns 
  */
 function responseInceptorsError(error: any) {
+    const { showMessage } = useSystemTools()
     const router = useRouter();
-    const sysStore = SysStore();
     nprogress.done();
     console.error(error);
     if (error.code === "ERR_NETWORK") {
-        sysStore.showSeconds(3000, "网络异常，请检查网络后重试");
+        showMessage("网络异常，请检查网络后重试");
     }
     if (
         error.response &&
         typeof error.response.data === 'object' &&
         error.response.data.code === 301
     ) {
-        sysStore.showSeconds(3000, "token已失效，请重新登录");
+        showMessage("token已失效，请重新登录");
         router.push({ name: 'login' });
     }
     return Promise.reject(error);

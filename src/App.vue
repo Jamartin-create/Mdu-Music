@@ -9,6 +9,8 @@ import { UserStore } from "./store/user";
 import { RouterView } from "vue-router";
 import { ref, watch } from "vue";
 import { isLogin } from "./utils/auth";
+import { useRoute } from "vue-router";
+const route = useRoute();
 const musicStore = MusicStore();
 musicStore.player.play = false;
 const userStore = UserStore();
@@ -49,7 +51,10 @@ const musicPlayer = ref<InstanceType<typeof Player>>();
     </RouterView>
   </main>
   <Teleport to="body">
-    <PlayerController v-if="loginStatus" @toggle-lryics="showLryicsPage" />
+    <PlayerController
+      v-if="route.path != '/login'"
+      @toggle-lryics="showLryicsPage"
+    />
   </Teleport>
   <Player ref="musicPlayer" />
 </template>
