@@ -23,6 +23,7 @@
           placeholder="Search..."
           @keydown.enter="enter"
         />
+        <i class="fab fa-github-alt github" @click="toGithub"></i>
       </div>
     </div>
   </header>
@@ -41,6 +42,9 @@ function enter() {
 
 function routerChange(number: -1 | 1) {
   router.go(number);
+}
+function toGithub() {
+  window.open("https://github.com/Jamartin-create/LilMartinMusicV3ts");
 }
 </script>
 
@@ -114,6 +118,10 @@ header {
         margin: 0 10px 0 5px;
       }
     }
+  }
+  .github {
+    font-size: 20px;
+    cursor: pointer;
   }
 }
 </style>
