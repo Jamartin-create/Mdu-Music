@@ -7,6 +7,7 @@ import App from './App.vue'
 import "./assets/iconfont/iconfont";
 import "./assets/iconfont/iconfont.css";
 import "nprogress/nprogress.css";
+// import './registerServiceWorker';
 
 const app = createApp(App)
 app.use(pinia)

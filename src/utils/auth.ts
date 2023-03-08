@@ -1,6 +1,7 @@
 import { UserStore } from '../store/user'
 import { logOut } from '../api/login'
 import Cookies from 'js-cookie'
+import { useRouter } from 'vue-router';
 
 /**
  * @description 解析接口传来的Cookie

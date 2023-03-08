@@ -25,6 +25,11 @@
         />
         <i class="fab fa-github-alt github" @click="toGithub"></i>
       </div>
+      <i
+        v-if="isLogin()"
+        class="fas fa-sign-out-alt logout"
+        @click="logout"
+      ></i>
     </div>
   </header>
 </template>
@@ -32,6 +37,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { RouterLink, useRouter } from "vue-router";
+import { doLogout, isLogin } from "../utils/auth";
 
 const router = useRouter();
 const keywords = ref<string>("");
@@ -45,6 +51,10 @@ function routerChange(number: -1 | 1) {
 }
 function toGithub() {
   window.open("https://github.com/Jamartin-create/LilMartinMusicV3ts");
+}
+function logout() {
+  doLogout();
+  location.reload();
 }
 </script>
 
@@ -119,9 +129,19 @@ header {
       }
     }
   }
-  .github {
+  .github,
+  .logout {
     font-size: 20px;
     cursor: pointer;
+  }
+  .logout {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    &:active {
+      transform: translateY(-50%) scale(1.1);
+    }
   }
 }
 </style>
